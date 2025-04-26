@@ -110,6 +110,10 @@ void UWorld::Tick(float DeltaTime)
     for (AActor* Actor : PendingBeginPlayActors)
     {
         Actor->BeginPlay();
+        if (WorldType != EWorldType::Editor && Actor->bUseScript)
+        {
+            Actor->InitLuaScriptComponent();
+        }
     }
     PendingBeginPlayActors.Empty();
 }
@@ -120,6 +124,10 @@ void UWorld::BeginPlay()
     {
         if (Actor->GetWorld() == this)
         {
+            if (WorldType != EWorldType::Editor && Actor->bUseScript)
+            {
+                Actor->InitLuaScriptComponent();
+            }
             Actor->BeginPlay();
         }
     }
