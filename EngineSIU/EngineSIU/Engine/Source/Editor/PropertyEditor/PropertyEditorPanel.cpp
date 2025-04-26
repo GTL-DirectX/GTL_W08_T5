@@ -26,6 +26,9 @@
 #include "Components/TextComponent.h"
 #include "Components/HeightFogComponent.h"
 #include "Components/ProjectileMovementComponent.h"
+#include "Components/Shapes/BoxComponent.h"
+#include "Components/Shapes/CapsuleComponent.h"
+#include "Components/Shapes/SphereComponent.h"
 
 void PropertyEditorPanel::Render()
 {
@@ -130,6 +133,11 @@ void PropertyEditorPanel::Render()
     if (UHeightFogComponent* FogComponent = GetTargetComponent<UHeightFogComponent>(SelectedActor, SelectedComponent))
     {
         RenderForExponentialHeightFogComponent(FogComponent);
+    }
+
+    if (UShapeComponent* ShapeComponent = GetTargetComponent<UShapeComponent>(SelectedActor, SelectedComponent))
+    {
+        RenderForShapeComponent(ShapeComponent);
     }
 
     ImGui::End();
@@ -289,9 +297,15 @@ void PropertyEditorPanel::RenderForActor(AActor* InActor, USceneComponent* Targe
                     std::filesystem::create_directories(Dir);
                 }
 
+                std::ifstream luaTemplateFile(TemplateFilePath.ToWideString());
+
                 std::ofstream file(FilePath);
                 if (file.is_open())
                 {
+                    if (luaTemplateFile.is_open())
+                    {
+                        file << luaTemplateFile.rdbuf();
+                    }
                     // 생성 완료
                     file.close();
                 }
@@ -309,7 +323,8 @@ void PropertyEditorPanel::RenderForActor(AActor* InActor, USceneComponent* Targe
         }
     }
     ImGui::InputText("Script Name", GetData(LuaFilePath), LuaFilePath.Len() + 1, ImGuiInputTextFlags_ReadOnly);
-    
+
+    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
     if (ImGui::TreeNodeEx("Component", ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_DefaultOpen)) // 트리 노드 생성
     {
         ImGui::Text("Add");
@@ -336,6 +351,7 @@ void PropertyEditorPanel::RenderForActor(AActor* InActor, USceneComponent* Targe
 
         ImGui::TreePop();
     }
+    ImGui::PopStyleColor();
 }
 
 void PropertyEditorPanel::RenderForStaticMesh(UStaticMeshComponent* StaticMeshComp) const
@@ -1042,6 +1058,65 @@ void PropertyEditorPanel::RenderForExponentialHeightFogComponent(UHeightFogCompo
     ImGui::PopStyleColor();
 }
 
+void PropertyEditorPanel::RenderForShapeComponent(UShapeComponent* ShapeComponent) const
+{
+    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+    if (USphereComponent* Component = Cast<USphereComponent>(ShapeComponent))
+    {
+        if (ImGui::TreeNodeEx("Sphere Collision", ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_DefaultOpen)) // 트리 노드 생성
+        {
+            float Radius = Component->GetRadius();
+            ImGui::Text("Radius");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("##Radius", &Radius))
+            {
+                Component->SetRadius(Radius);
+            }
+            ImGui::TreePop();
+        }
+    }
+
+    if (UBoxComponent* Component = Cast<UBoxComponent>(ShapeComponent))
+    {
+        if (ImGui::TreeNodeEx("Box Collision", ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_DefaultOpen)) // 트리 노드 생성
+        {
+            FVector Extent = Component->GetBoxExtent();
+
+            float Extents[3] = { Extent.X, Extent.Y, Extent.Z };
+
+            ImGui::Text("Extent");
+            ImGui::SameLine();
+            if (ImGui::DragFloat3("##Extent", Extents)) {
+                Component->SetBoxExtent(FVector(Extents[0], Extents[1], Extents[2]));
+            }
+            ImGui::TreePop();
+        }
+    }
+
+    if (UCapsuleComponent* Component = Cast<UCapsuleComponent>(ShapeComponent))
+    {
+        if (ImGui::TreeNodeEx("Box Collision", ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_DefaultOpen)) // 트리 노드 생성
+        {
+            float HalfHeight = Component->GetHalfHeight();
+            float Radius = Component->GetRadius();
+
+            ImGui::Text("HalfHeight");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("##HalfHeight", &HalfHeight, 0.1f)) {
+                Component->SetHalfHeight(HalfHeight);
+            }
+
+            ImGui::Text("Radius");
+            ImGui::SameLine();
+            if (ImGui::DragFloat("##Radius", &Radius, 0.1f)) {
+                Component->SetRadius(Radius);
+            }
+            ImGui::TreePop();
+        }
+    }
+    
+    ImGui::PopStyleColor();
+}
 
 void PropertyEditorPanel::OnResize(HWND hWnd)
 {
