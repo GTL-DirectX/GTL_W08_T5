@@ -30,7 +30,7 @@ FLuaScriptManager::FLuaScriptManager()
 
 void FLuaScriptManager::SetLuaDefaultTypes()
 {
-    sol::table TypeTable = LuaState.create_table("EngineType");
+    sol::table TypeTable = LuaState.create_table("EngineTypes");
 
     // Default Math Types.
     LuaTypes::FBindLua<FColor>::Bind(TypeTable);
@@ -62,7 +62,7 @@ sol::table FLuaScriptManager::CreateLuaTable(const FString& ScriptName)
         //assert(false && "Lua File not found");
         return sol::table();
     }
-    
+
     if (!ScriptCacheMap.Contains(ScriptName))
     {
         sol::protected_function_result Result = LuaState.script_file(*ScriptName);
@@ -92,12 +92,7 @@ sol::table FLuaScriptManager::CreateLuaTable(const FString& ScriptName)
     sol::table NewEnv = LuaState.create_table();
     for (auto& pair : ScriptClass)
     {
-        // For Debug
-        std::string keyA;
-        if (pair.first.get_type() == sol::type::string) {   
-            keyA = pair.first.as<std::string>(); // 문자열로 변환      
-        }
-        NewEnv[pair.first] = pair.second;
+        NewEnv.set(pair.first, pair.second);
     }
 
     return NewEnv;

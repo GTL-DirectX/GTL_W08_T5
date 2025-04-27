@@ -30,6 +30,9 @@ class AActor : public UObject
 public:
     AActor() = default;
 
+    // SpawnActor 내부에서 Actor 생성 이후 호출될 함수.
+    // 생성 로직 단계에서 계층 구조에 종속되는 초기화를 대신 해주는 초기화 함수.
+    virtual void PostSpawnInitialize();
     virtual UObject* Duplicate(UObject* InOuter) override;
 
     /**

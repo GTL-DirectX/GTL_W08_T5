@@ -9,6 +9,11 @@
 #include "Components/LuaScriptComponent.h"
 #include "Engine/Lua/LuaScriptManager.h"
 
+void AActor::PostSpawnInitialize()
+{
+    InitLuaScriptComponent();
+}
+
 UObject* AActor::Duplicate(UObject* InOuter)
 {
     ThisClass* NewActor = Cast<ThisClass>(Super::Duplicate(InOuter));
@@ -37,7 +42,6 @@ UObject* AActor::Duplicate(UObject* InOuter)
 
     for (UActorComponent* Component : OwnedComponents)
     {
-
         UActorComponent* NewComponent = Cast<UActorComponent>(Component->Duplicate(NewActor));
         NewComponent->OwnerPrivate = NewActor;
         NewActor->OwnedComponents.Add(NewComponent);
@@ -114,7 +118,6 @@ void AActor::BeginPlay()
     if (bUseScript)
     {
         ApplyTypesOnLua(FLuaScriptManager::Get().GetLua());
-        InitLuaScriptComponent();
         SetupLuaProperties();
     }
 
