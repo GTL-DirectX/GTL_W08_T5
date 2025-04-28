@@ -4,7 +4,6 @@
 #include "UObject/Class.h"
 #include "Engine/Lua/LuaUtils/LuaTypeMacros.h"
 #include "Components/LuaScriptComponent.h"
-#include "Engine/Lua/LuaUtils/LuaTypeMacros.h"
 #include "Games/LastWar/UI/LastWarUI.h"
 
 ASpawnerActor::ASpawnerActor()
@@ -62,6 +61,7 @@ AActor* ASpawnerActor::SpawnActorLua(const std::string& ClassName, const FVector
 
     return NewActor;
 }
+
 
 void ASpawnerActor::RegisterLuaType(sol::state& Lua)
 {
