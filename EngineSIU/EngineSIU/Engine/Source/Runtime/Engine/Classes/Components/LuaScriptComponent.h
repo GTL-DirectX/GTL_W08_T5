@@ -25,6 +25,8 @@ public:
     virtual void TickComponent(float DeltaTime) override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+    virtual void DestroyComponent(bool bPromoteChildren = false) override;
+
 public:
     FString GetScriptName() const { return ScriptName; }
     bool LoadScript();

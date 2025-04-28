@@ -34,6 +34,8 @@ void ULuaScriptComponent::InitializeComponent()
             ScriptName = FString::Printf(TEXT("Scripts/%s/%s.lua"), *SceneName, *GetOwner()->GetClass()->GetName());
         }
     }
+
+    FLuaScriptManager::Get().RegisterActiveLuaComponent(this);
 }
 
 void ULuaScriptComponent::BeginPlay()
@@ -48,7 +50,7 @@ void ULuaScriptComponent::BeginPlay()
 
     if (SelfTable.valid() && SelfTable["BeginPlay"].valid())
     {
-        SelfTable["BeginPlay"](SelfTable);
+        ActivateFunction("BeginPlay", SelfTable);
     }
 }
 
@@ -57,7 +59,7 @@ void ULuaScriptComponent::TickComponent(float DeltaTime)
     Super::TickComponent(DeltaTime);
     if (SelfTable.valid() && SelfTable["Tick"].valid())
     {
-        SelfTable["Tick"](SelfTable, DeltaTime);
+        ActivateFunction("Tick", DeltaTime);
     }
 }
 
@@ -65,8 +67,14 @@ void ULuaScriptComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     if (SelfTable.valid() && SelfTable["EndPlay"].valid())
     {
-        SelfTable["EndPlay"](SelfTable, EndPlayReason);
+        ActivateFunction("EndPlay", EndPlayReason);
     }
+}
+
+void ULuaScriptComponent::DestroyComponent(bool bPromoteChildren)
+{
+    //FLuaScriptManager::Get().UnRigisterActiveLuaComponent(this);
+    Super::DestroyComponent(bPromoteChildren);
 }
 
 bool ULuaScriptComponent::LoadScript()
