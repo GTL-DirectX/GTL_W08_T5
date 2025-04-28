@@ -4,9 +4,10 @@
 #include "World/World.h"
 #include "PlayerController.h"
 #include "Components/InputComponent.h"
-#include "sol/sol.hpp"
 #include "Components/LuaScriptComponent.h"
 #include "Engine/Lua/LuaScriptManager.h"
+
+#include "Engine/Lua/LuaUtils/LuaTypeMacros.h"
 
 void AActor::PostSpawnInitialize()
 {
@@ -410,22 +411,17 @@ FString AActor::GetLuaScriptPathName()
     return LuaScriptComponent ? LuaScriptComponent->GetScriptName() : TEXT("");
 }
 
+
+
 void AActor::RegisterLuaType(sol::state& Lua)
 {
-    static bool bRegisteredLuaProperties = false;
-    if (!bRegisteredLuaProperties)
-    {
-        Lua.new_usertype<AActor>("AActor",
-            sol::constructors<ThisClass()>(),
-            "UUID", sol::property(&ThisClass::GetUUID),
-            /*"ActorName", &ThisClass::GetName,*/ // FString은 넘어가지 않는 중 내부에서 사용 불가.
-            "ActorLocation", sol::property(&ThisClass::GetActorLocation, &ThisClass::SetActorLocation),
-            "ActorRotation", sol::property(&ThisClass::GetActorRotation, &ThisClass::SetActorRotation),
-            "ActorScale", sol::property(&ThisClass::GetActorScale, &ThisClass::SetActorScale)
-        );
-        
-        bRegisteredLuaProperties = true;
-    }
+    DEFINE_LUA_TYPE_NO_PARENT(AActor,
+        "UUID", sol::property(&ThisClass::GetUUID),
+        /*"ActorName", &ThisClass::GetName,*/ // FString은 넘어가지 않는 중 내부에서 사용 불가.
+        "ActorLocation", sol::property(&ThisClass::GetActorLocation, &ThisClass::SetActorLocation),
+        "ActorRotation", sol::property(&ThisClass::GetActorRotation, &ThisClass::SetActorRotation),
+        "ActorScale", sol::property(&ThisClass::GetActorScale, &ThisClass::SetActorScale)
+    )
 }
 
 bool AActor::BindSelfLuaProperties()
