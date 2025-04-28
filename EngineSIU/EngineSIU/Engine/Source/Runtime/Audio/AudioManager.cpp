@@ -39,55 +39,56 @@ void AudioManager::Initialize()
     BgmGroup->setVolume(0.75f);
     SfxGroup->setVolume(0.75f);
 
-    FSlateAppMessageHandler* Handler = GEngineLoop.GetAppMessageHandler();
-    Handler->OnKeyDownDelegate.AddLambda([this](const FKeyEvent& InKeyEvent)
-    {
-        switch (InKeyEvent.GetCharacter())
-        {
-        case 'Q':
-            {
-                if (InKeyEvent.GetInputEvent() == IE_Pressed)
-                {
-                    PlayBgm(EAudioType::Mario);
-                }
-                break;
-            }
-        case 'W':
-            {
-                if (InKeyEvent.GetInputEvent() == IE_Pressed)
-                {
-                    PlayBgm(EAudioType::Goofy);
-                }
-                break;
-            }
-        case 'E':
-            {
-                if (InKeyEvent.GetInputEvent() == IE_Pressed)
-                {
-                    StopBgm();
-                }
-                break;
-            }
-        case 'A':
-            {
-                if (InKeyEvent.GetInputEvent() == IE_Pressed)
-                {
-                    PlayOneShot(EAudioType::Mario);
-                }
-                break;
-            }
-        case 'S':
-            {
-                if (InKeyEvent.GetInputEvent() == IE_Pressed)
-                {
-                    PlayOneShot(EAudioType::Goofy);
-                }
-                break;
-            }
-        default:
-            break;
-        }
-    });
+    // 테스트용 코드
+    // FSlateAppMessageHandler* Handler = GEngineLoop.GetAppMessageHandler();
+    // Handler->OnKeyDownDelegate.AddLambda([this](const FKeyEvent& InKeyEvent)
+    // {
+    //     switch (InKeyEvent.GetCharacter())
+    //     {
+    //     case 'Q':
+    //         {
+    //             if (InKeyEvent.GetInputEvent() == IE_Pressed)
+    //             {
+    //                 PlayBgm(EAudioType::Mario);
+    //             }
+    //             break;
+    //         }
+    //     case 'W':
+    //         {
+    //             if (InKeyEvent.GetInputEvent() == IE_Pressed)
+    //             {
+    //                 PlayBgm(EAudioType::Goofy);
+    //             }
+    //             break;
+    //         }
+    //     case 'E':
+    //         {
+    //             if (InKeyEvent.GetInputEvent() == IE_Pressed)
+    //             {
+    //                 StopBgm();
+    //             }
+    //             break;
+    //         }
+    //     case 'A':
+    //         {
+    //             if (InKeyEvent.GetInputEvent() == IE_Pressed)
+    //             {
+    //                 PlayOneShot(EAudioType::Mario);
+    //             }
+    //             break;
+    //         }
+    //     case 'S':
+    //         {
+    //             if (InKeyEvent.GetInputEvent() == IE_Pressed)
+    //             {
+    //                 PlayOneShot(EAudioType::Goofy);
+    //             }
+    //             break;
+    //         }
+    //     default:
+    //         break;
+    //     }
+    // });
 }
 
 void AudioManager::Release()
