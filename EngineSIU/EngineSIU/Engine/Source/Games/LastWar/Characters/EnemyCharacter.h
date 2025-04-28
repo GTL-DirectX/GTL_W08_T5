@@ -3,6 +3,7 @@
 
 class AEnemyCharacter : public ACharacter
 {
+
     DECLARE_CLASS(AEnemyCharacter, ACharacter)
 
 public:
@@ -10,7 +11,6 @@ public:
 
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
-
 
 
 };
