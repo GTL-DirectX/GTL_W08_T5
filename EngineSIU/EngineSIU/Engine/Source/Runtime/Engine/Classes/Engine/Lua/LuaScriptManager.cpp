@@ -99,7 +99,7 @@ sol::table FLuaScriptManager::CreateLuaTable(const FString& ScriptName)
     }
 
     return NewEnv;
-}
+} 
 
 void FLuaScriptManager::RegisterActiveLuaComponent(ULuaScriptComponent* LuaComponent)
 {
@@ -112,66 +112,34 @@ void FLuaScriptManager::UnRigisterActiveLuaComponent(ULuaScriptComponent* LuaCom
         ActiveLuaComponents.Remove(LuaComponent);
 }
 
-void FLuaScriptManager::ReloadLuaScript(const FString& ScriptName)
-{
-    if (!std::filesystem::exists(*ScriptName))
-    {
-        UE_LOG(LogLevel::Error, TEXT("InValid Lua File name."));
-        return;
-    }
-
-    if (!ScriptCacheMap.Contains(ScriptName))
-    {
-        return;
-    }
-
-    ScriptCacheMap.Remove(ScriptName);
-
-    sol::protected_function_result Result = LuaState.script_file(*ScriptName);
-    if (!Result.valid())
-    {
-        sol::error err = Result;
-        UE_LOG(LogLevel::Error, TEXT("Lua Error: %s"), *FString(err.what()));
-        return;
-    }
-
-    sol::object ReturnValue = Result.get<sol::object>();
-    if (!ReturnValue.is<sol::table>())
-    {
-        UE_LOG(LogLevel::Error, TEXT("Lua Error: %s"), *FString("Script file did not return a table."));
-        return;
-    }
-
-    FLuaTableScriptInfo NewInfo;
-    NewInfo.ScriptTable = ReturnValue.as<sol::table>();
-    NewInfo.LastWriteTime = std::filesystem::last_write_time(*ScriptName);
-    ScriptCacheMap.Add(ScriptName, NewInfo);
-    UE_LOG(LogLevel::Display, TEXT("Reload Lua Script: %s"), *ScriptName);
-}
-
 void FLuaScriptManager::HotReloadLuaScript()
 {
     TSet<FString> ChangedScriptName;
     TMap<FString, FLuaTableScriptInfo> CopiedScriptCacheMap = ScriptCacheMap;
-    for (const auto& ScriptCached : CopiedScriptCacheMap)
+    for (const TMap<FString, FLuaTableScriptInfo>::PairType& ScriptCached : CopiedScriptCacheMap)
     {
         FString ScriptName = ScriptCached.Key;
         FLuaTableScriptInfo LuaScriptInfo = ScriptCached.Value;
         auto depTime = std::filesystem::last_write_time(GetData(ScriptName));
         if (LuaScriptInfo.LastWriteTime != depTime)
         {
-            ReloadLuaScript(ScriptName);
+            if (ScriptCacheMap.Contains(ScriptName))
+            {
+                ScriptCacheMap.Remove(ScriptName);
+            }
+
             ChangedScriptName.Add(ScriptName);
         }
     }
 
-    for (const auto& ChangedScript : ChangedScriptName)
+    for (const FString& ChangedScript : ChangedScriptName)
     {
-        for (const auto* LuaComponent : ActiveLuaComponents)
+        for (const ULuaScriptComponent* LuaComponent : ActiveLuaComponents)
         {
             if (LuaComponent->GetScriptName() == ChangedScript)
             {
                 LuaComponent->GetOwner()->BindSelfLuaProperties();
+                UE_LOG(LogLevel::Display, TEXT("Lua Script Reloaded: %s"), *ChangedScript);
             } 
         }
     }
