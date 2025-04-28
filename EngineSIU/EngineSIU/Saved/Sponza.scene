@@ -22,7 +22,7 @@
                         "Position": "X=74.761 Y=-17.589 Z=7.839",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -44,7 +44,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=74.761 Y=-17.589 Z=7.839",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -76,25 +76,15 @@
             "ActorLabel": "APointLight2163",
             "Components": [
                 {
-                    "ComponentClass": "UBillboardComponent",
-                    "ComponentID": "UBillboardComponent_0",
+                    "ComponentClass": "ULuaScriptComponent",
+                    "ComponentID": "LuaComponent_0",
                     "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "nullptr",
-                        "BufferKey": "Assets/Editor/Icon/PointLight_64x.png",
-                        "ComponentClass": "UBillboardComponent",
-                        "ComponentName": "UBillboardComponent_0",
+                        "ComponentClass": "ULuaScriptComponent",
+                        "ComponentName": "LuaComponent_0",
                         "ComponentOwner": "APointLight_2163",
                         "ComponentOwnerClass": "APointLight",
-                        "FinalIndexU": "0.000000",
-                        "FinalIndexV": "0.000000",
-                        "RelativeLocation": "X=74.761 Y=13.295 Z=7.839",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "m_Type": "UBillboardComponent"
+                        "bIsActive": "true"
                     }
                 },
                 {
@@ -114,7 +104,7 @@
                         "Position": "X=74.761 Y=13.295 Z=7.839",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -122,15 +112,25 @@
                     }
                 },
                 {
-                    "ComponentClass": "ULuaScriptComponent",
-                    "ComponentID": "LuaComponent_0",
+                    "ComponentClass": "UBillboardComponent",
+                    "ComponentID": "UBillboardComponent_0",
                     "Properties": {
-                        "ComponentClass": "ULuaScriptComponent",
-                        "ComponentName": "LuaComponent_0",
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "nullptr",
+                        "BufferKey": "Assets/Editor/Icon/PointLight_64x.png",
+                        "ComponentClass": "UBillboardComponent",
+                        "ComponentName": "UBillboardComponent_0",
                         "ComponentOwner": "APointLight_2163",
                         "ComponentOwnerClass": "APointLight",
+                        "FinalIndexU": "0.000000",
+                        "FinalIndexV": "0.000000",
+                        "RelativeLocation": "X=74.761 Y=13.295 Z=7.839",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
-                        "bIsActive": "true"
+                        "bIsActive": "true",
+                        "m_Type": "UBillboardComponent"
                     }
                 }
             ],
@@ -162,7 +162,7 @@
                         "Position": "X=25.619 Y=-17.589 Z=7.839",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -184,7 +184,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=25.619 Y=-17.589 Z=7.839",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -216,18 +216,6 @@
             "ActorLabel": "APointLight2176",
             "Components": [
                 {
-                    "ComponentClass": "ULuaScriptComponent",
-                    "ComponentID": "LuaComponent_0",
-                    "Properties": {
-                        "ComponentClass": "ULuaScriptComponent",
-                        "ComponentName": "LuaComponent_0",
-                        "ComponentOwner": "APointLight_2176",
-                        "ComponentOwnerClass": "APointLight",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "UPointLightComponent",
                     "ComponentID": "PointLightComponent_0",
                     "Properties": {
@@ -244,9 +232,21 @@
                         "Position": "X=24.460 Y=13.295 Z=7.839",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "ULuaScriptComponent",
+                    "ComponentID": "LuaComponent_0",
+                    "Properties": {
+                        "ComponentClass": "ULuaScriptComponent",
+                        "ComponentName": "LuaComponent_0",
+                        "ComponentOwner": "APointLight_2176",
+                        "ComponentOwnerClass": "APointLight",
                         "bAutoActive": "true",
                         "bIsActive": "true"
                     }
@@ -266,7 +266,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=24.460 Y=13.295 Z=7.839",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -286,6 +286,18 @@
             "ActorLabel": "APointLight2181",
             "Components": [
                 {
+                    "ComponentClass": "ULuaScriptComponent",
+                    "ComponentID": "LuaComponent_0",
+                    "Properties": {
+                        "ComponentClass": "ULuaScriptComponent",
+                        "ComponentName": "LuaComponent_0",
+                        "ComponentOwner": "APointLight_2181",
+                        "ComponentOwnerClass": "APointLight",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
                     "ComponentClass": "UPointLightComponent",
                     "ComponentID": "PointLightComponent_0",
                     "Properties": {
@@ -302,7 +314,7 @@
                         "Position": "X=-12.883 Y=13.295 Z=7.839",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -324,23 +336,11 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=-12.883 Y=13.295 Z=7.839",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
                         "m_Type": "UBillboardComponent"
-                    }
-                },
-                {
-                    "ComponentClass": "ULuaScriptComponent",
-                    "ComponentID": "LuaComponent_0",
-                    "Properties": {
-                        "ComponentClass": "ULuaScriptComponent",
-                        "ComponentName": "LuaComponent_0",
-                        "ComponentOwner": "APointLight_2181",
-                        "ComponentOwnerClass": "APointLight",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
                     }
                 }
             ],
@@ -356,25 +356,13 @@
             "ActorLabel": "APointLight2186",
             "Components": [
                 {
-                    "ComponentClass": "UPointLightComponent",
-                    "ComponentID": "PointLightComponent_0",
+                    "ComponentClass": "ULuaScriptComponent",
+                    "ComponentID": "LuaComponent_0",
                     "Properties": {
-                        "AABB_Max": "X=1.000 Y=1.000 Z=0.100",
-                        "AABB_Min": "X=-1.000 Y=-1.000 Z=-0.100",
-                        "AttachParentID": "UBillboardComponent_0",
-                        "Attenuation": "20.000000",
-                        "ComponentClass": "UPointLightComponent",
-                        "ComponentName": "PointLightComponent_0",
+                        "ComponentClass": "ULuaScriptComponent",
+                        "ComponentName": "LuaComponent_0",
                         "ComponentOwner": "APointLight_2186",
                         "ComponentOwnerClass": "APointLight",
-                        "Intensity": "5000.000000",
-                        "LightColor": "R=1.000 G=1.000 B=1.000 A=1.000",
-                        "Position": "X=-48.840 Y=13.295 Z=7.839",
-                        "Radius": "200.000000",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "Type": "1",
                         "bAutoActive": "true",
                         "bIsActive": "true"
                     }
@@ -394,7 +382,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=-48.840 Y=13.295 Z=7.839",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -402,13 +390,25 @@
                     }
                 },
                 {
-                    "ComponentClass": "ULuaScriptComponent",
-                    "ComponentID": "LuaComponent_0",
+                    "ComponentClass": "UPointLightComponent",
+                    "ComponentID": "PointLightComponent_0",
                     "Properties": {
-                        "ComponentClass": "ULuaScriptComponent",
-                        "ComponentName": "LuaComponent_0",
+                        "AABB_Max": "X=1.000 Y=1.000 Z=0.100",
+                        "AABB_Min": "X=-1.000 Y=-1.000 Z=-0.100",
+                        "AttachParentID": "UBillboardComponent_0",
+                        "Attenuation": "20.000000",
+                        "ComponentClass": "UPointLightComponent",
+                        "ComponentName": "PointLightComponent_0",
                         "ComponentOwner": "APointLight_2186",
                         "ComponentOwnerClass": "APointLight",
+                        "Intensity": "5000.000000",
+                        "LightColor": "R=1.000 G=1.000 B=1.000 A=1.000",
+                        "Position": "X=-48.840 Y=13.295 Z=7.839",
+                        "Radius": "200.000000",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "Type": "1",
                         "bAutoActive": "true",
                         "bIsActive": "true"
                     }
@@ -437,7 +437,7 @@
                         "ComponentOwner": "ACube_2191",
                         "ComponentOwnerClass": "ACube",
                         "RelativeLocation": "X=-3.713 Y=-0.225 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=10.000 Y=10.000 Z=10.000",
                         "StaticMeshPath": "Contents/Sponza/sponza-atrium-3.obj",
                         "bAutoActive": "true",
@@ -470,6 +470,18 @@
             "ActorLabel": "APointLight2194",
             "Components": [
                 {
+                    "ComponentClass": "ULuaScriptComponent",
+                    "ComponentID": "LuaComponent_0",
+                    "Properties": {
+                        "ComponentClass": "ULuaScriptComponent",
+                        "ComponentName": "LuaComponent_0",
+                        "ComponentOwner": "APointLight_2194",
+                        "ComponentOwnerClass": "APointLight",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
                     "ComponentClass": "UPointLightComponent",
                     "ComponentID": "PointLightComponent_0",
                     "Properties": {
@@ -486,7 +498,7 @@
                         "Position": "X=-99.166 Y=13.295 Z=7.839",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -508,23 +520,11 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=-99.166 Y=13.295 Z=7.839",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
                         "m_Type": "UBillboardComponent"
-                    }
-                },
-                {
-                    "ComponentClass": "ULuaScriptComponent",
-                    "ComponentID": "LuaComponent_0",
-                    "Properties": {
-                        "ComponentClass": "ULuaScriptComponent",
-                        "ComponentName": "LuaComponent_0",
-                        "ComponentOwner": "APointLight_2194",
-                        "ComponentOwnerClass": "APointLight",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
                     }
                 }
             ],
@@ -556,7 +556,7 @@
                         "Position": "X=-99.166 Y=-22.883 Z=7.839",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -578,7 +578,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=-99.166 Y=-22.883 Z=7.839",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -610,6 +610,18 @@
             "ActorLabel": "APointLight2204",
             "Components": [
                 {
+                    "ComponentClass": "ULuaScriptComponent",
+                    "ComponentID": "LuaComponent_0",
+                    "Properties": {
+                        "ComponentClass": "ULuaScriptComponent",
+                        "ComponentName": "LuaComponent_0",
+                        "ComponentOwner": "APointLight_2204",
+                        "ComponentOwnerClass": "APointLight",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
                     "ComponentClass": "UPointLightComponent",
                     "ComponentID": "PointLightComponent_0",
                     "Properties": {
@@ -626,7 +638,7 @@
                         "Position": "X=-70.983 Y=-22.883 Z=7.839",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -648,23 +660,11 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=-70.983 Y=-22.883 Z=7.839",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
                         "m_Type": "UBillboardComponent"
-                    }
-                },
-                {
-                    "ComponentClass": "ULuaScriptComponent",
-                    "ComponentID": "LuaComponent_0",
-                    "Properties": {
-                        "ComponentClass": "ULuaScriptComponent",
-                        "ComponentName": "LuaComponent_0",
-                        "ComponentOwner": "APointLight_2204",
-                        "ComponentOwnerClass": "APointLight",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
                     }
                 }
             ],
@@ -696,7 +696,7 @@
                         "Position": "X=-72.311 Y=-19.614 Z=45.899",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -718,7 +718,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=-72.311 Y=-19.614 Z=45.899",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -766,7 +766,7 @@
                         "Position": "X=-37.031 Y=-19.614 Z=45.899",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -788,7 +788,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=-37.031 Y=-19.614 Z=45.899",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -836,7 +836,7 @@
                         "Position": "X=6.418 Y=-19.614 Z=45.899",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -858,7 +858,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=6.418 Y=-19.614 Z=45.899",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -890,6 +890,28 @@
             "ActorLabel": "APointLight2224",
             "Components": [
                 {
+                    "ComponentClass": "UBillboardComponent",
+                    "ComponentID": "UBillboardComponent_0",
+                    "Properties": {
+                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
+                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
+                        "AttachParentID": "nullptr",
+                        "BufferKey": "Assets/Editor/Icon/PointLight_64x.png",
+                        "ComponentClass": "UBillboardComponent",
+                        "ComponentName": "UBillboardComponent_0",
+                        "ComponentOwner": "APointLight_2224",
+                        "ComponentOwnerClass": "APointLight",
+                        "FinalIndexU": "0.000000",
+                        "FinalIndexV": "0.000000",
+                        "RelativeLocation": "X=39.736 Y=12.725 Z=45.899",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true",
+                        "m_Type": "UBillboardComponent"
+                    }
+                },
+                {
                     "ComponentClass": "UPointLightComponent",
                     "ComponentID": "PointLightComponent_0",
                     "Properties": {
@@ -906,33 +928,11 @@
                         "Position": "X=39.736 Y=12.725 Z=45.899",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
                         "bIsActive": "true"
-                    }
-                },
-                {
-                    "ComponentClass": "UBillboardComponent",
-                    "ComponentID": "UBillboardComponent_0",
-                    "Properties": {
-                        "AABB_max": "X=0.000 Y=0.000 Z=0.000",
-                        "AABB_min": "X=0.000 Y=0.000 Z=0.000",
-                        "AttachParentID": "nullptr",
-                        "BufferKey": "Assets/Editor/Icon/PointLight_64x.png",
-                        "ComponentClass": "UBillboardComponent",
-                        "ComponentName": "UBillboardComponent_0",
-                        "ComponentOwner": "APointLight_2224",
-                        "ComponentOwnerClass": "APointLight",
-                        "FinalIndexU": "0.000000",
-                        "FinalIndexV": "0.000000",
-                        "RelativeLocation": "X=39.736 Y=12.725 Z=45.899",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "bAutoActive": "true",
-                        "bIsActive": "true",
-                        "m_Type": "UBillboardComponent"
                     }
                 },
                 {
@@ -976,7 +976,7 @@
                         "Position": "X=6.418 Y=12.725 Z=45.899",
                         "Radius": "200.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -998,7 +998,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=6.418 Y=12.725 Z=45.899",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -1046,7 +1046,7 @@
                         "Position": "X=39.736 Y=-5.406 Z=71.533",
                         "Radius": "800.000000",
                         "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "Type": "1",
                         "bAutoActive": "true",
@@ -1068,7 +1068,7 @@
                         "FinalIndexU": "0.000000",
                         "FinalIndexV": "0.000000",
                         "RelativeLocation": "X=39.736 Y=-5.406 Z=71.533",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
                         "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
                         "bAutoActive": "true",
                         "bIsActive": "true",
@@ -1100,33 +1100,6 @@
             "ActorLabel": "OBJ_SPOTLIGHT_152",
             "Components": [
                 {
-                    "ComponentClass": "USpotLightComponent",
-                    "ComponentID": "USpotLightComponent_0",
-                    "Properties": {
-                        "AABB_Max": "X=1.000 Y=1.000 Z=0.100",
-                        "AABB_Min": "X=-1.000 Y=-1.000 Z=-0.100",
-                        "AttachParentID": "UBillboardComponent_0",
-                        "Attenuation": "20.000000",
-                        "ComponentClass": "USpotLightComponent",
-                        "ComponentName": "USpotLightComponent_0",
-                        "ComponentOwner": "ASpotLight_152",
-                        "ComponentOwnerClass": "ASpotLight",
-                        "Direction": "X=-0.361 Y=-0.078 Z=-0.929",
-                        "InnerRad": "0.261800",
-                        "Intensity": "5000.000000",
-                        "LightColor": "R=0.969 G=0.021 B=0.021 A=1.000",
-                        "OuterRad": "0.947714",
-                        "Position": "X=0.000 Y=0.000 Z=9.126",
-                        "Radius": "30.000000",
-                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
-                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=0.000",
-                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
-                        "Type": "2",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "UBillboardComponent",
                     "ComponentID": "UBillboardComponent_0",
                     "Properties": {
@@ -1146,6 +1119,33 @@
                         "bAutoActive": "true",
                         "bIsActive": "true",
                         "m_Type": "UBillboardComponent"
+                    }
+                },
+                {
+                    "ComponentClass": "USpotLightComponent",
+                    "ComponentID": "USpotLightComponent_0",
+                    "Properties": {
+                        "AABB_Max": "X=1.000 Y=1.000 Z=0.100",
+                        "AABB_Min": "X=-1.000 Y=-1.000 Z=-0.100",
+                        "AttachParentID": "UBillboardComponent_0",
+                        "Attenuation": "20.000000",
+                        "ComponentClass": "USpotLightComponent",
+                        "ComponentName": "USpotLightComponent_0",
+                        "ComponentOwner": "ASpotLight_152",
+                        "ComponentOwnerClass": "ASpotLight",
+                        "Direction": "X=-0.361 Y=-0.078 Z=-0.929",
+                        "InnerRad": "0.261800",
+                        "Intensity": "5000.000000",
+                        "LightColor": "R=0.969 G=0.021 B=0.021 A=1.000",
+                        "OuterRad": "0.947714",
+                        "Position": "X=0.000 Y=0.000 Z=9.126",
+                        "Radius": "30.000000",
+                        "RelativeLocation": "X=0.000 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "Type": "2",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
                     }
                 },
                 {
@@ -1173,18 +1173,6 @@
             "ActorLabel": "OBJ_CUBE_155",
             "Components": [
                 {
-                    "ComponentClass": "ULuaScriptComponent",
-                    "ComponentID": "LuaComponent_0",
-                    "Properties": {
-                        "ComponentClass": "ULuaScriptComponent",
-                        "ComponentName": "LuaComponent_0",
-                        "ComponentOwner": "ACube_155",
-                        "ComponentOwnerClass": "ACube",
-                        "bAutoActive": "true",
-                        "bIsActive": "true"
-                    }
-                },
-                {
                     "ComponentClass": "UStaticMeshComponent",
                     "ComponentID": "StaticMeshComponent_0",
                     "Properties": {
@@ -1203,6 +1191,18 @@
                         "bIsActive": "true",
                         "m_Type": ""
                     }
+                },
+                {
+                    "ComponentClass": "ULuaScriptComponent",
+                    "ComponentID": "LuaComponent_0",
+                    "Properties": {
+                        "ComponentClass": "ULuaScriptComponent",
+                        "ComponentName": "LuaComponent_0",
+                        "ComponentOwner": "ACube_155",
+                        "ComponentOwnerClass": "ACube",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
                 }
             ],
             "Properties": {
@@ -1210,6 +1210,46 @@
                 "bUseScript": "true"
             },
             "RootComponentID": "StaticMeshComponent_0"
+        },
+        {
+            "ActorClass": "ASpawnerActor",
+            "ActorID": "ASpawnerActor_307",
+            "ActorLabel": "OBJ_Spawner_307",
+            "Components": [
+                {
+                    "ComponentClass": "USceneComponent",
+                    "ComponentID": "SpawnerLocation",
+                    "Properties": {
+                        "AttachParentID": "nullptr",
+                        "ComponentClass": "USceneComponent",
+                        "ComponentName": "SpawnerLocation",
+                        "ComponentOwner": "ASpawnerActor_307",
+                        "ComponentOwnerClass": "ASpawnerActor",
+                        "RelativeLocation": "X=23.461 Y=0.000 Z=0.000",
+                        "RelativeRotation": "Pitch=0.000 Yaw=0.000 Roll=-0.000",
+                        "RelativeScale3D": "X=1.000 Y=1.000 Z=1.000",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                },
+                {
+                    "ComponentClass": "ULuaScriptComponent",
+                    "ComponentID": "LuaComponent_0",
+                    "Properties": {
+                        "ComponentClass": "ULuaScriptComponent",
+                        "ComponentName": "LuaComponent_0",
+                        "ComponentOwner": "ASpawnerActor_307",
+                        "ComponentOwnerClass": "ASpawnerActor",
+                        "bAutoActive": "true",
+                        "bIsActive": "true"
+                    }
+                }
+            ],
+            "Properties": {
+                "bTickInEditor": "false",
+                "bUseScript": "true"
+            },
+            "RootComponentID": "SpawnerLocation"
         }
     ],
     "NextUUID": 0,

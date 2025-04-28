@@ -8,6 +8,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/Lua/LuaUtils/LuaTypeMacros.h"
 #include "GameFramework/PlayerController.h"
+#include "Games/LastWar/UI/LastWarUI.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -42,6 +43,12 @@ void APlayerCharacter::Tick(float DeltaTime)
     FVector CamLocation = GetActorLocation() + BackOffset + UpOffset;
     FollowCamera->SetLocation(CamLocation);
     FollowCamera->SetRotation(GetActorRotation());
+
+    if (!LastWarUI::bShowGameOver && Health <= 0)
+    {
+        EnableInput(Cast<APlayerController>(Controller));
+        Health = 100.0f;
+    }
 
 }
 
