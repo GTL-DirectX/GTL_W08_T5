@@ -42,8 +42,8 @@ private:
 template<typename ...Args>
 inline void ULuaScriptComponent::ActivateFunction(const FString& FunctionName, Args && ...args)
 {
-    if (SelfTable.valid() && SelfTable[FunctionName].valid())
+    if (SelfTable.valid() && SelfTable[*FunctionName].valid())
     {
-        SelfTable[FunctionName](SelfTable, std::forward<Args>(args)...);
+        SelfTable[*FunctionName](SelfTable, std::forward<Args>(args)...);
     }
 }
