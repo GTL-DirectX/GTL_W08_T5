@@ -32,7 +32,7 @@ public:
     template<typename... Args>
     void ActivateFunction(const FString& FunctionName, Args&&... args);
 
-    sol::table& GetLuaEnv() { return SelfTable; }
+    sol::table& GetLuaSelfTable() { return SelfTable; }
 
 private:
     FString ScriptName;

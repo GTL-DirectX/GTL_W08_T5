@@ -440,7 +440,7 @@ bool AActor::SetupLuaProperties()
         return false;
     }
     
-    sol::table& LuaTable = LuaScriptComponent->GetLuaEnv();
+    sol::table& LuaTable = LuaScriptComponent->GetLuaSelfTable();
     if (!LuaTable.valid())
     {
         return false;
