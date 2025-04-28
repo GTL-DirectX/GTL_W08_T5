@@ -19,9 +19,21 @@ UObject* ULuaScriptComponent::Duplicate(UObject* InOuter)
         return nullptr;
 
     NewComponent->ScriptName = ScriptName;
-    NewComponent->LuaEnv = LuaEnv;
+    NewComponent->SelfTable = SelfTable;
  
     return NewComponent;
+}
+
+void ULuaScriptComponent::InitializeComponent()
+{
+    if (ScriptName.IsEmpty())
+    {
+        if (GetWorld() && GetWorld()->GetActiveLevel())
+        {
+            FString SceneName = GetWorld()->GetActiveLevel()->GetLevelName();
+            ScriptName = FString::Printf(TEXT("Scripts/%s/%s.lua"), *SceneName, *GetOwner()->GetClass()->GetName());
+        }
+    }
 }
 
 void ULuaScriptComponent::BeginPlay()
@@ -34,36 +46,30 @@ void ULuaScriptComponent::BeginPlay()
         ScriptName = FString::Printf(TEXT("Scripts/%s/%s.lua"), *SceneName, *GetOwner()->GetClass()->GetName());
     }
 
-    if (LuaEnv.valid() && LuaEnv["BeginPlay"].valid())
+    if (SelfTable.valid() && SelfTable["BeginPlay"].valid())
     {
-        LuaEnv["BeginPlay"]();
+        SelfTable["BeginPlay"](SelfTable);
     }
 }
 
 void ULuaScriptComponent::TickComponent(float DeltaTime)
 {
     Super::TickComponent(DeltaTime);
-    if (LuaEnv.valid() && LuaEnv["Tick"].valid())
+    if (SelfTable.valid() && SelfTable["Tick"].valid())
     {
-        // For Debug
-        if (LuaEnv["TestInt"].valid())
-        {
-        }
-        LuaEnv["TestInt"] = 5;
-        std::string a = LuaEnv["Tick"](DeltaTime);
-        int b = 0;
+        SelfTable["Tick"](SelfTable, DeltaTime);
     }
 }
 
 void ULuaScriptComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-    if (LuaEnv.valid() && LuaEnv["EndPlay"].valid())
+    if (SelfTable.valid() && SelfTable["EndPlay"].valid())
     {
-        LuaEnv["EndPlay"](EndPlayReason);
+        SelfTable["EndPlay"](SelfTable, EndPlayReason);
     }
 }
 
-void ULuaScriptComponent::LoadScript()
+bool ULuaScriptComponent::LoadScript()
 {
     if (ScriptName.IsEmpty())
     {
@@ -71,24 +77,12 @@ void ULuaScriptComponent::LoadScript()
         ScriptName = FString::Printf(TEXT("Scripts/%s/%s.lua"), *SceneName, *GetOwner()->GetClass()->GetName());
     }
 
-    LuaEnv = FLuaScriptManager::Get().CreateLuaTable(ScriptName);
+    SelfTable = FLuaScriptManager::Get().CreateLuaTable(ScriptName);
 
-    if (!LuaEnv.valid())
+    if (!SelfTable.valid())
     {
-        return;
+        return false;
     }
 
-    // For Debug
-    int cc, bb;
-    LuaEnv["obj"] = GetOwner();
-    if (LuaEnv["TestInt"].valid())
-    {
-        cc = LuaEnv["TestInt"];
-    }
-    LuaEnv["TestInt"] = 5;
-    if (LuaEnv["TestInt"].valid())
-    {
-        bb = LuaEnv["TestInt"];
-    }
-    auto a = LuaEnv["obj"];
+    return true;
 }

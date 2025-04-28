@@ -192,7 +192,7 @@ public: // Lua Script.
 	void InitLuaScriptComponent();
 	FString GetLuaScriptPathName();
 	virtual void ApplyTypesOnLua(sol::state& Lua); // Lua에 클래스 등록해주는 함수.
-    virtual void SetupLuaProperties(); // LuaEnv에서 사용할 멤버 변수 등록 함수.
+    virtual bool SetupLuaProperties(); // LuaEnv에서 사용할 멤버 변수 등록 함수.
 
 	bool bUseScript = true;
 private:
