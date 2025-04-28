@@ -116,8 +116,8 @@ void AActor::BeginPlay()
 {
     if (bUseScript)
     {
-        ApplyTypesOnLua(FLuaScriptManager::Get().GetLua());
-        SetupLuaProperties();
+        RegisterLuaType(FLuaScriptManager::Get().GetLua());
+        BindSelfLuaProperties();
     }
 
     const auto CopyComponents = OwnedComponents;
@@ -410,7 +410,7 @@ FString AActor::GetLuaScriptPathName()
     return LuaScriptComponent ? LuaScriptComponent->GetScriptName() : TEXT("");
 }
 
-void AActor::ApplyTypesOnLua(sol::state& Lua)
+void AActor::RegisterLuaType(sol::state& Lua)
 {
     static bool bRegisteredLuaProperties = false;
     if (!bRegisteredLuaProperties)
@@ -428,7 +428,7 @@ void AActor::ApplyTypesOnLua(sol::state& Lua)
     }
 }
 
-bool AActor::SetupLuaProperties()
+bool AActor::BindSelfLuaProperties()
 {
     if (!LuaScriptComponent)
     {
