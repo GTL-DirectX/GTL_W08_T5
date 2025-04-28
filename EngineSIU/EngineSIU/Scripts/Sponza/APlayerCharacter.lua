@@ -8,16 +8,11 @@ local FVector = EngineTypes.FVector
 function ReturnTable:BeginPlay()
 
     print("BeginPlay ", self.Name)
-    print(self.this)
 
 end
 
 -- Tick: 매 프레임마다 호출
 function ReturnTable:Tick(DeltaTime)
-
-    local this = self.this
-
-    -- print(this)
 
 end
 
@@ -30,12 +25,11 @@ end
 
 function ReturnTable:OnOverlap(Other)
     print("\nOverlap")
+    print(Other)
+    print("Damage: ", Other.Damage)
+    print("Health: ", self.this.Health)
     Other:Destroy()
-    self.Health = self.Health - 10
-    print(Other.Health)
-    print("Location ", self.this.ActorLocation.X)
-    print("Health ", self.Health)
-
+    self.this.Health = self.this.Health - Other.Damage
 end
 
 return ReturnTable

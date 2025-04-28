@@ -5,6 +5,7 @@
 #include "World/World.h"
 #include "Engine/Engine.h"
 #include "Games/LastWar/Core/Spawner.h"
+#include "Audio/AudioManager.h"
 
 bool LastWarUI::bShowGameOver = false;
 
@@ -123,9 +124,11 @@ void LastWarUI::StartGame()
 void LastWarUI::GameOver()
 {
     bShowGameOver = true;
+    AudioManager::Get().StopBgm();
 }
 
 void LastWarUI::RestartGame()
 {
     bShowGameOver = false;
+    AudioManager::Get().PlayBgm(EAudioType::MainTheme);
 }

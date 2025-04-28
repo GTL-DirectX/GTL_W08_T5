@@ -8,7 +8,9 @@ local ReturnTable = {} -- Return용 table. cpp에서 Table 단위로 객체 관�
 function ReturnTable:BeginPlay()
 
     print("BeginPlay ", self.Name) -- Table에 등록해 준 Name 출력.
-    print(self.this, self.this.ActorLocation)
+    self.this.Speed = 20
+    self.this.Damage = 50
+    print(self.this.Speed)
 
 end
 
@@ -19,7 +21,7 @@ function ReturnTable:Tick(DeltaTime)
     -- sol::property로 등록된 변수는 변수 사용으로 getter, setter 등록이 되어 .(dot) 으로 접근가능하고
     -- 바로 등록된 경우에는 PropertyName() 과 같이 함수 형태로 호출되어야 함.
     local this = self.this
-    this.ActorLocation = this.ActorLocation + FVector(-5.0, 0.0, 0.0) * DeltaTime
+    this.ActorLocation = this.ActorLocation + FVector(-this.Speed, 0, 0) * DeltaTime
 end
 
 -- EndPlay: Actor가 파괴되거나 레벨이 전환될 때 호출

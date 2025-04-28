@@ -9,6 +9,7 @@
 #include "Engine/Lua/LuaUtils/LuaTypeMacros.h"
 #include "GameFramework/PlayerController.h"
 #include "Games/LastWar/UI/LastWarUI.h"
+#include "Audio/AudioManager.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -118,8 +119,10 @@ void APlayerCharacter::HandleOverlap(AActor* OtherActor)
 
         if (LuaScriptComponent)
         {
-            LuaScriptComponent->ActivateFunction("OnOverlap", Enemy, Enemy->GetAttackDamage());
+            LuaScriptComponent->ActivateFunction("OnOverlap", Enemy);
         }
+
+        AudioManager::Get().PlayOneShot(EAudioType::Goofy);
     }
 
     if (Health <= 0.0f)
