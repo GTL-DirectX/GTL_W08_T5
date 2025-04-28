@@ -4,8 +4,13 @@
 #include "Engine/FLoaderOBJ.h"
 #include "Delegates/DelegateCombination.h"
 #include "EnemyCharacter.h"
+#include "Wall.h"
 #include "Components/LuaScriptComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/Shapes/CapsuleComponent.h"
+#include "Components/Shapes/BoxComponent.h"
+#include "Engine/EditorEngine.h"
+#include "Engine/Engine.h"
 #include "Engine/Lua/LuaUtils/LuaTypeMacros.h"
 #include "GameFramework/PlayerController.h"
 #include "Games/LastWar/UI/LastWarUI.h"
@@ -14,6 +19,7 @@
 APlayerCharacter::APlayerCharacter()
 {
     BodyMesh->SetStaticMesh(FManagerOBJ::GetStaticMesh(L"Contents/Gunner/Gunner.obj"));
+    CollisionCapsule->SetOverlapCheck(false);
 
     FollowCamera = AddComponent<UCameraComponent>("PlayerCamera");
     FollowCamera->SetupAttachment(RootComponent);
@@ -32,6 +38,7 @@ void APlayerCharacter::BeginPlay()
 {
     Super::BeginPlay();
     OnActorBeginOverlapHandle = OnActorBeginOverlap.AddDynamic(this, &APlayerCharacter::HandleOverlap);
+    SetCharacterMeshCount(1);
 }
   
 void APlayerCharacter::Tick(float DeltaTime)
@@ -100,26 +107,49 @@ void APlayerCharacter::MoveForward(float Value)
 
 void APlayerCharacter::MoveRight(float Value)
 {
-    if (Value != 0.0f)
+    if (Controller && Value != 0.0f)
     {
-        AddMovementInput(GetActorRightVector(), Value);
+        AddMovementInput(FVector::RightVector, Value);
+
+        FVector Location = GetActorLocation();
+        if (Location.Y > 14.0f)
+            Location.Y = 14.0f;
+        else if (Location.Y < -16.0f)
+            Location.Y = -16.0f;
+
+        SetActorLocation(Location);
     }
 }
 
-void APlayerCharacter::HandleOverlap(AActor* OtherActor)  
-{  
-    AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor);
-    if (Enemy)  
+void APlayerCharacter::HandleOverlap(AActor* OtherActor)
+{
+    if (IsActorBeingDestroyed())  
     {  
-        if (IsActorBeingDestroyed())  
-        {  
-            return;  
-        }  
-        UE_LOG(LogLevel::Display, "Handle Overlap %s,  %s", GetData(OtherActor->GetName()), GetData(GetName()));  
+        return;  
+    }
 
+    UE_LOG(LogLevel::Display, "Handle Overlap %s,  %s", GetData(OtherActor->GetName()), GetData(GetName()));
+    
+    if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(OtherActor))  
+    {  
         if (LuaScriptComponent)
         {
-            LuaScriptComponent->ActivateFunction("OnOverlap", Enemy);
+            LuaScriptComponent->ActivateFunction("OnOverlapEnemy", Enemy);
+        }
+    }
+    else if (AWall* Wall = Cast<AWall>(OtherActor))
+    {
+        if (LuaScriptComponent)
+        {
+            if(Wall->BoxComponent)
+            {
+                if (!Wall->BoxComponent->GetOverlapCheck())
+                {
+                    return;
+                }
+                Wall->BoxComponent->SetOverlapCheck(false);
+            }
+            LuaScriptComponent->ActivateFunction("OnOverlapWall", OtherActor, Wall->GetVarientValue());
         }
 
         AudioManager::Get().PlayOneShot(EAudioType::Goofy);
@@ -137,7 +167,8 @@ void APlayerCharacter::RegisterLuaType(sol::state& Lua)
     DEFINE_LUA_TYPE_WITH_PARENT(APlayerCharacter, sol::bases<AActor, APawn, ACharacter>(),
         "Health", sol::property(&ThisClass::GetHealth, &ThisClass::SetHealth),
         "Speed", sol::property(&ThisClass::GetSpeed, &ThisClass::SetSpeed),
-        "AttackDamage", sol::property(&ThisClass::GetAttackDamage, &ThisClass::SetAttackDamage)
+        "AttackDamage", sol::property(&ThisClass::GetAttackDamage, &ThisClass::SetAttackDamage),
+        "AddCharacterMeshCount", &ThisClass::AddCharacterMeshCount
     )
 }
 
@@ -152,5 +183,66 @@ bool APlayerCharacter::BindSelfLuaProperties()
 
     LuaTable["this"] = this;
     return true;
+}
+
+void APlayerCharacter::AddCharacterMeshCount(int32 InCount)
+{
+    CharacterMeshCount += InCount;
+    CharacterMeshCount = FMath::Max(0, CharacterMeshCount);
+    SetCharacterMeshCount(CharacterMeshCount);
+}
+
+void APlayerCharacter::SetCharacterMeshCount(int32 InCount)
+{
+    CharacterMeshCount = InCount;
+    CharacterMeshCount = FMath::Max(0, CharacterMeshCount);
+    
+    while (StaticMeshComponents.Num() < CharacterMeshCount)
+    {
+        UCapsuleComponent* CapsuleComponent = AddComponent<UCapsuleComponent>();
+        CapsuleComponents.Add(CapsuleComponent);
+        CapsuleComponent->SetupAttachment(RootComponent);
+        
+        UStaticMeshComponent* StaticMeshComponent = AddComponent<UStaticMeshComponent>();
+        StaticMeshComponents.Add(StaticMeshComponent);
+        StaticMeshComponent->SetStaticMesh(FManagerOBJ::GetStaticMesh(L"Contents/Gunner/Gunner.obj"));
+        StaticMeshComponent->SetupAttachment(CapsuleComponent);
+    }
+
+    while (StaticMeshComponents.Num() > CharacterMeshCount)
+    {
+        UCapsuleComponent* CapsuleComponent = CapsuleComponents[CapsuleComponents.Num() - 1];
+        UStaticMeshComponent* StaticMeshComponent = StaticMeshComponents[StaticMeshComponents.Num() - 1];
+
+        CapsuleComponents.RemoveAt(CapsuleComponents.Num() - 1);
+        StaticMeshComponents.RemoveAt(StaticMeshComponents.Num() - 1);
+        
+
+        if (UEditorEngine* EditorEngine = Cast<UEditorEngine>(GEngine))
+        {
+            if (EditorEngine->GetSelectedComponent() == CapsuleComponent)
+            {
+                EditorEngine->DeselectComponent(CapsuleComponent);
+            }
+            else if (EditorEngine->GetSelectedComponent() == StaticMeshComponent)
+            {
+                EditorEngine->DeselectComponent(StaticMeshComponent);
+            }
+        }
+        
+        // 순서 조심
+        StaticMeshComponent->DestroyComponent();
+        CapsuleComponent->DestroyComponent();
+    }
+
+
+    for (int i = 0; i < CapsuleComponents.Num(); i++)
+    {
+        constexpr float weight = .4f;
+        float distance = FMath::Sqrt(static_cast<float>(i)) * weight;
+        float cos = FMath::Cos(i * 100.f) * distance;
+        float sin = FMath::Sin(i * 100.f) * distance;
+        CapsuleComponents[i]->SetRelativeLocation(FVector(cos, sin, CapsuleComponents[i]->GetRelativeLocation().Z));
+    }    
 }
  
