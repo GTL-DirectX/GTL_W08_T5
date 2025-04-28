@@ -98,7 +98,6 @@ void APlayerCharacter::RegisterLuaType(sol::state& Lua)
 bool APlayerCharacter::BindSelfLuaProperties()
 {
     Super::BindSelfLuaProperties();
-
     sol::table& LuaTable = LuaScriptComponent->GetLuaSelfTable();
     if (!LuaTable.valid())
     {
