@@ -39,7 +39,7 @@ void AWall::Tick(float DeltaTime)
 
 void AWall::RegisterLuaType(sol::state& Lua)
 {
-    DEFINE_LUA_TYPE_WITH_PARENT(AWall, ACharacter,
+    DEFINE_LUA_TYPE_WITH_PARENT(AWall, sol::bases<ACharacter, APawn, AActor>(),
         "ActorLocation", sol::property(&ThisClass::GetActorLocation, &ThisClass::SetActorLocation),
         "VarientValue", sol::property(&ThisClass::GetVarientValue, &ThisClass::SetVarientValue)
     )

@@ -1,3 +1,5 @@
+setmetatable(_ENV, { __index = EngineTypes })
+
 local ReturnTable = {}
 
 local FVector = EngineTypes.FVector
@@ -6,11 +8,16 @@ local FVector = EngineTypes.FVector
 function ReturnTable:BeginPlay()
 
     print("BeginPlay ", self.Name)
+    print(self.this)
 
 end
 
 -- Tick: 매 프레임마다 호출
 function ReturnTable:Tick(DeltaTime)
+
+    local this = self.this
+
+    -- print(this)
 
 end
 
@@ -21,12 +28,13 @@ function ReturnTable:EndPlay(EndPlayReason)
 
 end
 
-function ReturnTable:OnOverlap(Other, Damage)
-    print("Other Damage", Damage)
+function ReturnTable:OnOverlap(Other)
+    print("\nOverlap")
     Other:Destroy()
-    self.this.Health = self.this.Health - Damage
-    print("Health ", self.this.Health)
-
+    self.Health = self.Health - 10
+    print(Other.Health)
+    print("Location ", self.this.ActorLocation.X)
+    print("Health ", self.Health)
 
 end
 

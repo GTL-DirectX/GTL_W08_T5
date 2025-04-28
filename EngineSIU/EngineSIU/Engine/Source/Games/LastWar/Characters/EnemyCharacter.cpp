@@ -4,6 +4,9 @@
 #include "Components/LuaScriptComponent.h"
 #include "Engine/Lua/LuaUtils/LuaTypeMacros.h"
 
+#include "Engine/Lua/LuaUtils/LuaTypeMacros.h"
+#include "Components/LuaScriptComponent.h"
+
 AEnemyCharacter::AEnemyCharacter()
 {
     BodyMesh->SetStaticMesh(FManagerOBJ::GetStaticMesh(L"Contents/Enemy/enemy.obj"));
@@ -53,12 +56,12 @@ void AEnemyCharacter::SetProperties(const TMap<FString, FString>& InProperties)
 
 void AEnemyCharacter::RegisterLuaType(sol::state& Lua)
 {
-    DEFINE_LUA_TYPE_WITH_PARENT(AEnemyCharacter, ACharacter,
-        "ActorLocation", sol::property(&ThisClass::GetActorLocation, &ThisClass::SetActorLocation),
+    DEFINE_LUA_TYPE_WITH_PARENT(AEnemyCharacter, sol::bases<AActor, APawn, ACharacter>(),
         "Health", sol::property(&ThisClass::GetHealth, &ThisClass::SetHealth),
         "Speed", sol::property(&ThisClass::GetSpeed, &ThisClass::SetSpeed),
-        "Damage", sol::property(&ThisClass::GetDamage, &ThisClass::SetDamage)
+        "AttackDamage", sol::property(&ThisClass::GetAttackDamage, &ThisClass::SetAttackDamage)
     );
+    
 }
 
 bool AEnemyCharacter::BindSelfLuaProperties()
@@ -69,8 +72,9 @@ bool AEnemyCharacter::BindSelfLuaProperties()
     {
         return false;
     }
-    LuaTable["this"] = this;
 
+    LuaTable["this"] = this;
+    LuaTable["Health"] = Health;
     return true;
 }
 

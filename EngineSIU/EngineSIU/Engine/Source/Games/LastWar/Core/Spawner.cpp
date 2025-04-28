@@ -65,7 +65,7 @@ AActor* ASpawnerActor::SpawnActorLua(const std::string& ClassName, const FVector
 
 void ASpawnerActor::RegisterLuaType(sol::state& Lua)
 {
-    DEFINE_LUA_TYPE_WITH_PARENT(ASpawnerActor, AActor,
+    DEFINE_LUA_TYPE_WITH_PARENT(ASpawnerActor, sol::bases<AActor>(),
         "SpawnActorLua", &ThisClass::SpawnActorLua,
         "ActorLocation", sol::property(&ThisClass::GetActorLocation, &ThisClass::SetActorLocation) 
     )
