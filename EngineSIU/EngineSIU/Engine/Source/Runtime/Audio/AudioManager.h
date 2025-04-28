@@ -1,8 +1,8 @@
 #pragma once
-#include "Container/Map.h"
-#include "Container/String.h"
 #include "FMOD/include/fmod.hpp"
 
+#include "Container/Map.h"
+#include "Container/String.h"
 
 enum class EAudioType{
     Mario,
@@ -32,8 +32,7 @@ private:
     
     FMOD::Channel* BgmChannel = nullptr;
 
-    FMOD::System* System = nullptr;   
-    unsigned int Version;
+    FMOD::System* System = nullptr;
 
     FMOD::ChannelGroup* BgmGroup = nullptr;
     FMOD::ChannelGroup* SfxGroup = nullptr;

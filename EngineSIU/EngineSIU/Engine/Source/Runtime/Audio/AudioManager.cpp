@@ -1,6 +1,5 @@
 #include "AudioManager.h"
 
-#include "LevelEditor/SlateAppMessageHandler.h"
 #include "UObject/Object.h"
 
 std::unordered_map<EAudioType, FString> AudioManager::AudioMap = {
@@ -10,9 +9,9 @@ std::unordered_map<EAudioType, FString> AudioManager::AudioMap = {
 
 void AudioManager::Initialize()
 {
-    UE_LOG(LogLevel::Display, "FMOD cpp context example");
-
+    unsigned int Version;
     FMOD_RESULT result = FMOD::System_Create(&System);
+
     if (result != FMOD_OK)
     {
         MessageBox(nullptr, L"failed! System Create", L"Error", MB_ICONERROR | MB_OK);
@@ -36,73 +35,9 @@ void AudioManager::Initialize()
     // 채널 그룹 생성
     System->createChannelGroup("BGM_Group", &BgmGroup);
     System->createChannelGroup("SFX_Group", &SfxGroup);
+    
     BgmGroup->setVolume(0.75f);
     SfxGroup->setVolume(0.75f);
-}
-
-void AudioManager::Release()
-{
-    for (const auto& [_, Map] : SoundMap)
-    {
-        for (const auto& [_, Map2] : Map)
-        {
-            for (const auto& [_, Sound] : Map2)
-            {
-                Sound->release();
-            } 
-        } 
-    }
-    SoundMap.Empty();
-    System->release();
-}
-
-void AudioManager::PlayOneShot(EAudioType AudioType)
-{
-    FMOD::Channel* Channel = nullptr;
-
-    FMOD::Sound* Sound = GetSound(AudioMap[AudioType], FMOD_DEFAULT | FMOD_CREATESAMPLE, nullptr);
-
-    // 사운드 재생
-    FMOD_RESULT result = System->playSound(Sound, nullptr, false, &Channel);
-    if (result != FMOD_OK)
-    {
-        UE_LOG(LogLevel::Error, TEXT("Failed to play sound!"));
-    }
-    Channel->setChannelGroup(SfxGroup);
-}
-
-void AudioManager::PlayBgm(EAudioType AudioType)
-{
-    if (BgmChannel != nullptr)
-    {
-        StopBgm();
-    }
-    
-    FMOD::Sound* Sound = GetSound(AudioMap[AudioType], FMOD_LOOP_NORMAL | FMOD_CREATESAMPLE, nullptr);
-
-    // 사운드 재생
-    FMOD_RESULT result = System->playSound(Sound, nullptr, false, &BgmChannel);
-    if (result != FMOD_OK)
-    {
-        UE_LOG(LogLevel::Error, TEXT("Failed to play sound!"));
-    }
-    BgmChannel->setChannelGroup(BgmGroup);
-}
-
-void AudioManager::StopBgm()
-{
-    BgmChannel->stop();
-    BgmChannel = nullptr;
-}
-
-
-void AudioManager::Tick()
-{
-    FMOD_RESULT result = System->update();                  
-    if (result != FMOD_OK)
-    {
-        MessageBox(nullptr, L"System Update Error", L"Error", MB_ICONERROR | MB_OK);
-    }
 
     FSlateAppMessageHandler* Handler = GEngineLoop.GetAppMessageHandler();
     Handler->OnKeyDownDelegate.AddLambda([this](const FKeyEvent& InKeyEvent)
@@ -153,6 +88,69 @@ void AudioManager::Tick()
             break;
         }
     });
+}
+
+void AudioManager::Release()
+{
+    for (const auto& [_, Map] : SoundMap)
+    {
+        for (const auto& [_, Map2] : Map)
+        {
+            for (const auto& [_, Sound] : Map2)
+            {
+                Sound->release();
+            } 
+        } 
+    }
+    SoundMap.Empty();
+    System->release();
+}
+
+void AudioManager::PlayOneShot(EAudioType AudioType)
+{
+    FMOD::Channel* Channel = nullptr;
+
+    FMOD::Sound* Sound = GetSound(AudioMap[AudioType], FMOD_DEFAULT | FMOD_CREATESAMPLE, nullptr);
+
+    // 사운드 재생
+    FMOD_RESULT result = System->playSound(Sound, SfxGroup, false, &Channel);
+    if (result != FMOD_OK)
+    {
+        UE_LOG(LogLevel::Error, TEXT("Failed to play sound!"));
+    }
+}
+
+void AudioManager::PlayBgm(EAudioType AudioType)
+{
+    if (BgmChannel != nullptr)
+    {
+        StopBgm();
+    }
+    
+    FMOD::Sound* Sound = GetSound(AudioMap[AudioType], FMOD_LOOP_NORMAL | FMOD_CREATESAMPLE, nullptr);
+
+    // 사운드 재생
+    FMOD_RESULT result = System->playSound(Sound, BgmGroup, false, &BgmChannel);
+    if (result != FMOD_OK)
+    {
+        UE_LOG(LogLevel::Error, TEXT("Failed to play sound!"));
+    }
+}
+
+void AudioManager::StopBgm()
+{
+    BgmChannel->stop();
+    BgmChannel = nullptr;
+}
+
+
+void AudioManager::Tick()
+{
+    FMOD_RESULT result = System->update();                  
+    if (result != FMOD_OK)
+    {
+        MessageBox(nullptr, L"System Update Error", L"Error", MB_ICONERROR | MB_OK);
+    }
 }
 
 FMOD::Sound* AudioManager::GetSound(const FString& SoundPath, FMOD_MODE Mode, FMOD_CREATESOUNDEXINFO* ExInfo)
