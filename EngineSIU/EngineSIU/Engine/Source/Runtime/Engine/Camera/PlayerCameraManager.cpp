@@ -105,7 +105,6 @@ float FViewTargetTransitionParams::GetBlendAlpha(const float& TimePct) const
 void APlayerCameraManager::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
-    ViewTarget.POV.Location = FVector(-3.0f, 0.0f, 3.0f);
 }
 
 UObject* APlayerCameraManager::Duplicate(UObject* InOuter)
@@ -256,8 +255,8 @@ void APlayerCameraManager::UpdateViewTarget(FViewTarget& OutVT, float DeltaTime)
     {
         if (UCameraComponent* CamComp = OutVT.Target->GetComponentByClass<UCameraComponent>())
         {
-            OutVT.POV.Location = CamComp->GetRelativeLocation();
-            OutVT.POV.Rotation = CamComp->GetRelativeRotation();
+            OutVT.POV.Location = CamComp->GetWorldLocation();
+            OutVT.POV.Rotation = CamComp->GetWorldRotation();
             OutVT.POV.FOV = CamComp->GetFieldOfView();
         }
     }
@@ -336,7 +335,7 @@ void APlayerCameraManager::InitializeFor(APlayerController* PC)
 
     PCOwner = PC;
 
-    SetViewTarget(PC);
+    SetViewTarget(PCOwner);
 
     // set the level default scale
     //SetDesiredColorScale(GetWorldSettings()->DefaultColorScale, 5.f);

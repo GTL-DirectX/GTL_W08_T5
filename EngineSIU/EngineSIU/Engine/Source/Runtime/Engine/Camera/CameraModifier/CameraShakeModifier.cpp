@@ -27,40 +27,51 @@ UCameraShakeModifier::UCameraShakeModifier()
 
 bool UCameraShakeModifier::ModifyCamera(float DeltaTime, FMinimalViewInfo& InOutPOV)
 {
-    if (!bHasCapturedBase)
+    // 1) 경과 시간 누적
+    ElapsedTime += DeltaTime;
+    if (ElapsedTime >= Duration)
+        return false;  // 완전 종료
+
+    // 2) Alpha 결정
+    float alpha = 1.0f;
+    // 페이드인 중
+    if (ElapsedTime < AlphaInTime)
     {
-        OriginalLocation = InOutPOV.Location;
-        OriginalRotation = InOutPOV.Rotation;
-        bHasCapturedBase = true;
+        alpha = ElapsedTime / AlphaInTime;
+    }
+    // 페이드아웃 시작 전 (유지 구간)
+    else if (ElapsedTime < Duration - AlphaOutTime)
+    {
+        alpha = 1.0f;
+    }
+    // 페이드아웃 중
+    else
+    {
+        float tOut = (ElapsedTime - (Duration - AlphaOutTime)) / AlphaOutTime;
+        alpha = 1.0f - tOut;
     }
 
-    ElapsedTime = FMath::Min(ElapsedTime + DeltaTime, Duration);
-    if (ElapsedTime >= Duration)
-        return false;  // Modifier 제거
+    // 3) ShakeScale 계산
+    const float ShakeScale = alpha * Scale;
 
-    // 0~1 정규화
-    float inT = FMath::Clamp(ElapsedTime / BlendInTime, 0.f, 1.f);
-    float outT = FMath::Clamp((Duration - ElapsedTime) / BlendOutTime, 0.f, 1.f);
-    float blendAlpha = InCurve ? InCurve->Evaluate(inT) : inT;
-    blendAlpha *= OutCurve ? OutCurve->Evaluate(outT) : outT;
-    blendAlpha *= Scale;
-
-    auto calc = [&](const Oscillator& O, float phase)
+    // 4) 시간 누적 → 오프셋 계산
+    auto CalcOffset = [&](const Oscillator& O, float Phase)->float
         {
-            return O.Amplitude * blendAlpha
-                * FMath::Sin(phase + ElapsedTime * O.Frequency);
+            return O.Amplitude * ShakeScale
+                * FMath::Sin(Phase + ElapsedTime * O.Frequency);
         };
 
-    InOutPOV.Location = OriginalLocation + FVector(calc(LocX, PhaseX),
-        calc(LocY, PhaseY),
-        calc(LocZ, PhaseZ));
-
-    InOutPOV.Rotation = OriginalRotation + FRotator(
-        calc(RotPitch, PhasePitch),
-        calc(RotYaw, PhaseYaw),
-        calc(RotRoll, PhaseRoll)
+    // 5) ViewTarget.POV 에 적용
+    InOutPOV.Location += FVector(
+        CalcOffset(LocX, PhaseX),
+        CalcOffset(LocY, PhaseY),
+        CalcOffset(LocZ, PhaseZ)
+    );
+    InOutPOV.Rotation += FRotator(
+        CalcOffset(RotPitch, PhasePitch),
+        CalcOffset(RotYaw, PhaseYaw),
+        CalcOffset(RotRoll, PhaseRoll)
     );
 
     return true;
-
 }
