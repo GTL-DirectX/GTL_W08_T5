@@ -39,6 +39,7 @@ bool FViewTarget::Equals(const FViewTarget& Other) const
 void APlayerCameraManager::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
+    ViewTarget.POV.Location = FVector(-3.0f, 0.0f, 3.0f);
 }
 
 UObject* APlayerCameraManager::Duplicate(UObject* InOuter)
@@ -91,7 +92,7 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
         }
 
         // 실제 Shake/Fade/Zoom 연출 처리
-        bool bKeep = Mod->ModifyCamera(DeltaTime, CameraCachePrivate.POV);
+        bool bKeep = Mod->ModifyCamera(DeltaTime, ViewTarget.POV);
         if (!bKeep)
         {
             // Modifier 스스로 “끝났다” 를 알리면 제거

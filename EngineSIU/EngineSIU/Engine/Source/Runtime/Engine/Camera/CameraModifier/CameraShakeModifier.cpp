@@ -3,6 +3,15 @@
 
 UCameraShakeModifier::UCameraShakeModifier()
 {
+    // 기본 진폭·빈도 세팅
+    LocX.Amplitude = 0.0f;   LocX.Frequency = 5.0f;
+    LocY.Amplitude = 0.1f;   LocY.Frequency = 5.0f;
+    LocZ.Amplitude = 0.1f;   LocZ.Frequency = 5.0f;
+
+    RotPitch.Amplitude = 0.01f;  RotPitch.Frequency = 5.0f;
+    RotYaw.Amplitude = 0.01f;  RotYaw.Frequency = 5.0f;
+    RotRoll.Amplitude = 0.0f;  RotRoll.Frequency = 5.0f;
+
     // 0 ~ 2π 사이에서 랜덤하게 위상 설정
     PhaseX = FMath::FRandRange(0.f, 2 * PI);
     PhaseY = FMath::FRandRange(0.f, 2 * PI);
@@ -18,6 +27,13 @@ UCameraShakeModifier::UCameraShakeModifier()
 
 bool UCameraShakeModifier::ModifyCamera(float DeltaTime, FMinimalViewInfo& InOutPOV)
 {
+    if (!bHasCapturedBase)
+    {
+        OriginalLocation = InOutPOV.Location;
+        OriginalRotation = InOutPOV.Rotation;
+        bHasCapturedBase = true;
+    }
+
     ElapsedTime = FMath::Min(ElapsedTime + DeltaTime, Duration);
     if (ElapsedTime >= Duration)
         return false;  // Modifier 제거
@@ -35,13 +51,15 @@ bool UCameraShakeModifier::ModifyCamera(float DeltaTime, FMinimalViewInfo& InOut
                 * FMath::Sin(phase + ElapsedTime * O.Frequency);
         };
 
-    InOutPOV.Location += FVector(calc(LocX, PhaseX),
+    InOutPOV.Location = OriginalLocation + FVector(calc(LocX, PhaseX),
         calc(LocY, PhaseY),
         calc(LocZ, PhaseZ));
 
-    InOutPOV.Rotation.Pitch += calc(RotPitch, PhasePitch);
-    InOutPOV.Rotation.Yaw += calc(RotYaw, PhaseYaw);
-    InOutPOV.Rotation.Roll += calc(RotRoll, PhaseRoll);
+    InOutPOV.Rotation = OriginalRotation + FRotator(
+        calc(RotPitch, PhasePitch),
+        calc(RotYaw, PhaseYaw),
+        calc(RotRoll, PhaseRoll)
+    );
 
     return true;
 

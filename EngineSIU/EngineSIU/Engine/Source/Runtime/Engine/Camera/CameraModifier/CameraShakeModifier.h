@@ -9,7 +9,6 @@ struct Oscillator
 {
     float Amplitude = 0.0f;
     float Frequency = 0.0f;
-    float Phase;
 };
 
 class UCameraShakeModifier : public UCameraModifier
@@ -29,6 +28,8 @@ public:
     float GetBlendInTime() const { return BlendInTime; }
     float GetBlendOutTime() const { return BlendOutTime; }
     float GetScale() const { return Scale; }
+    void SetInCurve(std::shared_ptr<IInterpolator> InCurve) { this->InCurve = InCurve; }
+    void SetOutCurve(std::shared_ptr<IInterpolator> OutCurve) { this->OutCurve = OutCurve; }
 
 private:
     float Duration = 0.5f;
@@ -47,6 +48,10 @@ private:
 
     std::shared_ptr<IInterpolator> InCurve;
     std::shared_ptr<IInterpolator> OutCurve;
+
+    FVector   OriginalLocation;
+    FRotator  OriginalRotation;
+    bool      bHasCapturedBase = false;
 
 };
 
