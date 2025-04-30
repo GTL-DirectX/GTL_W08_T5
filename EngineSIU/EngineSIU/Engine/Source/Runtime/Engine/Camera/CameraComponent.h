@@ -18,7 +18,7 @@ public:
     UCameraComponent() = default; 
 
     // 카메라의 위치와 회전 설정
-    float GetFOV() const { return ViewFOV; }
+    float GetFieldOfView() const { return ViewFOV; }
     float GetAspectRatio() const { return AspectRatio; }
     float GetNearClip() const { return NearClip; }
     float GetFarClip() const { return FarClip; }
@@ -34,6 +34,13 @@ public:
     void SetProjectionMode(CameraProjectionMode InProjectionMode){ ProjectionMode = InProjectionMode; }
     CameraProjectionMode GetProjectionMode() const { return ProjectionMode; }
 
+    float GetOrthoSize() { return OrthoSize; }
+    void SetOrthoSize(float InOrthoSize)
+    {
+        OrthoSize = InOrthoSize;
+        OrthoSize = FMath::Max(OrthoSize, 0.1f);
+    }
+
 private:
     // 카메라 정보 
     float ViewFOV = 90.0f;
@@ -41,6 +48,7 @@ private:
     float NearClip = 0.1f;
     float FarClip = 1000.0f;
     float OrthoZoom;
+    float OrthoSize = 0.1;
 
     CameraProjectionMode ProjectionMode = CameraProjectionMode::Perspective;
 };

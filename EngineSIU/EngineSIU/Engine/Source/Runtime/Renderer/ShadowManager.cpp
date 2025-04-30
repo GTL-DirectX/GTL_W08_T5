@@ -1,9 +1,12 @@
 #include "ShadowManager.h"
 
 #include "ViewportClient.h"
+#include "Camera/CameraComponent.h"
 #include "Components/Light/DirectionalLightComponent.h"
 #include "Math/JungleMath.h"
 #include "D3D11RHI/DXDBufferManager.h"
+#include "Engine/Engine.h"
+#include "World/World.h"
 
 // --- 생성자 및 소멸자 ---
 
@@ -542,16 +545,39 @@ void FShadowManager::ReleaseDirectionalShadowResources()
 }
 
 void FShadowManager::UpdateCascadeMatrices(const std::shared_ptr<FViewportClient>& Viewport, UDirectionalLightComponent* DirectionalLight)
-{    
-    FMatrix InvViewProj = FMatrix::Inverse(Viewport->GetViewMatrix()*Viewport->GetProjectionMatrix());
-
+{
     CascadesViewProjMatrices.Empty();
     CascadesInvProjMatrices.Empty();
-	const FMatrix CamView = Viewport->GetViewMatrix();
-    float NearClip = Viewport->GetNearClip();
-    float FarClip = Viewport->GetFarClip();
-	const float FOV = Viewport->GetFieldOfView();          // Degrees
-	const float AspectRatio = Viewport->GetAspectRatio();
+
+    FMatrix CamView;
+    float NearClip;
+    float FarClip;
+    float FOV;
+    float AspectRatio;
+    
+    if (GEngine->ActiveWorld->WorldType == EWorldType::Editor)
+    {
+        CamView = Viewport->GetViewMatrix();
+        NearClip = Viewport->GetNearClip();
+        FarClip = Viewport->GetFarClip();
+        FOV = Viewport->GetFieldOfView();          // Degrees
+        AspectRatio = Viewport->GetAspectRatio();
+    }
+    else if (GEngine->ActiveWorld->WorldType == EWorldType::PIE)
+    {
+        auto Camera = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager;
+
+        CamView = JungleMath::CreateViewMatrix(
+            Camera->GetWorldLocation(),
+            Camera->GetWorldLocation() + Camera->GetForwardVector(),
+            Camera->GetUpVector()
+        );
+    
+        NearClip = Camera->GetNearClip();
+        FarClip = Camera->GetFarClip();
+        FOV = Camera->GetFieldOfView();          // Degrees
+        AspectRatio = Camera->GetAspectRatio();
+    }
 
 	float halfHFOV = FMath::DegreesToRadians(FOV) * 0.5f;
 	float tanHFOV = FMath::Tan(halfHFOV);

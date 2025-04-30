@@ -28,7 +28,9 @@
 #include "ShadowRenderPass.h"
 #include "ShowFlag.h"
 #include "UnrealClient.h"
+#include "Camera/CameraComponent.h"
 #include "GameFrameWork/Actor.h"
+#include "Math/JungleMath.h"
 
 #include "Stats/Stats.h"
 #include "Stats/GPUTimingManager.h"
@@ -249,13 +251,41 @@ void FRenderer::ClearRenderArr() const
 void FRenderer::UpdateCommonBuffer(const std::shared_ptr<FViewportClient>& Viewport) const
 {
     FCameraConstantBuffer CameraConstantBuffer;
-    CameraConstantBuffer.ViewMatrix = Viewport->GetViewMatrix();
-    CameraConstantBuffer.InvViewMatrix = FMatrix::Inverse(CameraConstantBuffer.ViewMatrix);
-    CameraConstantBuffer.ProjectionMatrix = Viewport->GetProjectionMatrix();
-    CameraConstantBuffer.InvProjectionMatrix = FMatrix::Inverse(CameraConstantBuffer.ProjectionMatrix);
-    CameraConstantBuffer.ViewLocation = Viewport->GetCameraLocation();
-    CameraConstantBuffer.NearClip = Viewport->GetNearClip();
-    CameraConstantBuffer.FarClip = Viewport->GetFarClip();
+    if (GEngine->ActiveWorld->WorldType == EWorldType::Editor)
+    {
+        CameraConstantBuffer.ViewMatrix = Viewport->GetViewMatrix();
+        CameraConstantBuffer.InvViewMatrix = FMatrix::Inverse(CameraConstantBuffer.ViewMatrix);
+        CameraConstantBuffer.ProjectionMatrix = Viewport->GetProjectionMatrix();
+        CameraConstantBuffer.InvProjectionMatrix = FMatrix::Inverse(CameraConstantBuffer.ProjectionMatrix);
+        CameraConstantBuffer.ViewLocation = Viewport->GetCameraLocation();
+        CameraConstantBuffer.NearClip = Viewport->GetNearClip();
+        CameraConstantBuffer.FarClip = Viewport->GetFarClip();
+    }
+    else if (GEngine->ActiveWorld->WorldType == EWorldType::PIE)
+    {
+        auto Camera = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager;
+        CameraConstantBuffer.ViewMatrix = JungleMath::CreateViewMatrix(
+                                        Camera->GetWorldLocation(),
+                                        Camera->GetWorldLocation() + Camera->GetForwardVector(),
+                                        Camera->GetUpVector()
+                                    );
+        CameraConstantBuffer.InvViewMatrix = FMatrix::Inverse(CameraConstantBuffer.ViewMatrix);
+
+        const float OrthoWidth = Camera->GetOrthoSize() * Camera->GetAspectRatio();
+        const float OrthoHeight = Camera->GetOrthoSize();
+
+        // 오쏘그래픽 투영 행렬 생성 (nearPlane, farPlane 은 기존 값 사용)
+        CameraConstantBuffer.ProjectionMatrix = JungleMath::CreateOrthoProjectionMatrix(
+            OrthoWidth,
+            OrthoHeight,
+            Camera->GetNearClip(),
+            Camera->GetFarClip()
+        );
+        CameraConstantBuffer.InvProjectionMatrix = FMatrix::Inverse(CameraConstantBuffer.ProjectionMatrix);
+        CameraConstantBuffer.ViewLocation = Camera->GetWorldLocation();
+        CameraConstantBuffer.NearClip = Camera->GetNearClip();
+        CameraConstantBuffer.FarClip = Camera->GetFarClip();   
+    }
     BufferManager->UpdateConstantBuffer("FCameraConstantBuffer", CameraConstantBuffer);
 }
 
