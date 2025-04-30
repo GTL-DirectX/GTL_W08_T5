@@ -29,6 +29,7 @@
 #include "ShowFlag.h"
 #include "UnrealClient.h"
 #include "Camera/CameraComponent.h"
+#include "Camera/PlayerCameraManager.h"
 #include "GameFrameWork/Actor.h"
 #include "Math/JungleMath.h"
 
@@ -263,28 +264,44 @@ void FRenderer::UpdateCommonBuffer(const std::shared_ptr<FViewportClient>& Viewp
     }
     else if (GEngine->ActiveWorld->WorldType == EWorldType::PIE)
     {
-        auto Camera = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager;
+        auto CameraPOV = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager->ViewTarget.POV;
         CameraConstantBuffer.ViewMatrix = JungleMath::CreateViewMatrix(
-                                        Camera->GetWorldLocation(),
-                                        Camera->GetWorldLocation() + Camera->GetForwardVector(),
-                                        Camera->GetUpVector()
+                                        CameraPOV.Location,
+                                        CameraPOV.Location  + CameraPOV.Rotation.GetForwardVector(),
+                                            CameraPOV.Rotation.GetUpVector()
                                     );
         CameraConstantBuffer.InvViewMatrix = FMatrix::Inverse(CameraConstantBuffer.ViewMatrix);
 
-        const float OrthoWidth = Camera->GetOrthoSize() * Camera->GetAspectRatio();
-        const float OrthoHeight = Camera->GetOrthoSize();
+        if (CameraPOV.ProjectionMode == CameraProjectionMode::Perspective)
+        {
+            CameraConstantBuffer.ProjectionMatrix = JungleMath::CreateProjectionMatrix(
+                FMath::DegreesToRadians(CameraPOV.FOV),
+                CameraPOV.AspectRatio,
+                CameraPOV.PerspectiveNearClipPlane,
+                CameraPOV.PerspectiveFarClipPlane
+            );
+            CameraConstantBuffer.NearClip = CameraPOV.PerspectiveNearClipPlane;
+            CameraConstantBuffer.FarClip = CameraPOV.PerspectiveFarClipPlane;
+        }
+        else if (CameraPOV.ProjectionMode == CameraProjectionMode::Orthographic)
+        {
+            // 오쏘그래픽 너비는 줌 값과 가로세로 비율에 따라 결정됩니다.
+            const float OrthoWidth = CameraPOV.OthoroWidth;
+            const float OrthoHeight = CameraPOV.OthoroWidth / CameraPOV.AspectRatio;
 
-        // 오쏘그래픽 투영 행렬 생성 (nearPlane, farPlane 은 기존 값 사용)
-        CameraConstantBuffer.ProjectionMatrix = JungleMath::CreateOrthoProjectionMatrix(
-            OrthoWidth,
-            OrthoHeight,
-            Camera->GetNearClip(),
-            Camera->GetFarClip()
-        );
+            // 오쏘그래픽 투영 행렬 생성 (nearPlane, farPlane 은 기존 값 사용)
+            CameraConstantBuffer.ProjectionMatrix = JungleMath::CreateOrthoProjectionMatrix(
+                OrthoWidth,
+                OrthoHeight,
+                CameraPOV.OrthoNearClipPlane,
+                CameraPOV.OrthoFarClipPlane
+            );
+
+            CameraConstantBuffer.NearClip = CameraPOV.OrthoNearClipPlane;
+            CameraConstantBuffer.FarClip = CameraPOV.OrthoFarClipPlane;
+        }
         CameraConstantBuffer.InvProjectionMatrix = FMatrix::Inverse(CameraConstantBuffer.ProjectionMatrix);
-        CameraConstantBuffer.ViewLocation = Camera->GetWorldLocation();
-        CameraConstantBuffer.NearClip = Camera->GetNearClip();
-        CameraConstantBuffer.FarClip = Camera->GetFarClip();   
+        CameraConstantBuffer.ViewLocation = CameraPOV.Location;
     }
     BufferManager->UpdateConstantBuffer("FCameraConstantBuffer", CameraConstantBuffer);
 }

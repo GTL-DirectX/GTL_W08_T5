@@ -249,5 +249,3 @@ FVector JungleMath::VInterpToConstant(const FVector& Current, const FVector& Tar
 
     return Target;
 }
-
-}

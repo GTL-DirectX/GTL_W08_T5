@@ -2,6 +2,7 @@
 
 #include "ViewportClient.h"
 #include "Camera/CameraComponent.h"
+#include "Camera/PlayerCameraManager.h"
 #include "Components/Light/DirectionalLightComponent.h"
 #include "Math/JungleMath.h"
 #include "D3D11RHI/DXDBufferManager.h"
@@ -565,18 +566,27 @@ void FShadowManager::UpdateCascadeMatrices(const std::shared_ptr<FViewportClient
     }
     else if (GEngine->ActiveWorld->WorldType == EWorldType::PIE)
     {
-        auto Camera = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager;
+        auto CameraPOV = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager->ViewTarget.POV;
 
         CamView = JungleMath::CreateViewMatrix(
-            Camera->GetWorldLocation(),
-            Camera->GetWorldLocation() + Camera->GetForwardVector(),
-            Camera->GetUpVector()
+            CameraPOV.Location,
+            CameraPOV.Location + CameraPOV.Rotation.GetForwardVector(),
+            CameraPOV.Rotation.GetUpVector()
         );
+        
+        if (CameraPOV.ProjectionMode == CameraProjectionMode::Perspective)
+        {
+            NearClip = CameraPOV.PerspectiveNearClipPlane;
+            FarClip = CameraPOV.PerspectiveFarClipPlane;
+        }
+        else if (CameraPOV.ProjectionMode == CameraProjectionMode::Orthographic)
+        {
+            NearClip = CameraPOV.OrthoNearClipPlane;
+            FarClip = CameraPOV.OrthoFarClipPlane;
+        }
     
-        NearClip = Camera->GetNearClip();
-        FarClip = Camera->GetFarClip();
-        FOV = Camera->GetFieldOfView();          // Degrees
-        AspectRatio = Camera->GetAspectRatio();
+        FOV = CameraPOV.FOV;          // Degrees
+        AspectRatio = CameraPOV.AspectRatio;
     }
 
 	float halfHFOV = FMath::DegreesToRadians(FOV) * 0.5f;

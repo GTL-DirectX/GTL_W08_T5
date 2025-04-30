@@ -6,6 +6,7 @@
 #include "Math/MathUtility.h"
 #include "EngineLoop.h"
 #include "Camera/CameraComponent.h"
+#include "Camera/PlayerCameraManager.h"
 #include "Engine/Engine.h"
 #include "LevelEditor/SLevelEditor.h"
 #include "Math/JungleMath.h"
@@ -107,12 +108,12 @@ FMatrix UBillboardComponent::CreateBillboardMatrix() const
     }
     else if (GEngine->ActiveWorld->WorldType == EWorldType::PIE)
     {
-        auto Camera = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager;
-
+        auto CameraPOV = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager->ViewTarget.POV;
+        
         CameraView = JungleMath::CreateViewMatrix(
-            Camera->GetWorldLocation(),
-            Camera->GetWorldLocation() + Camera->GetForwardVector(),
-            Camera->GetUpVector()
+            CameraPOV.Location,
+            CameraPOV.Location + CameraPOV.Rotation.GetForwardVector(),
+            CameraPOV.Rotation.GetUpVector()
         );
     }
     
@@ -169,35 +170,35 @@ bool UBillboardComponent::CheckPickingOnNDC(const TArray<FVector>& quadVertices,
     }
     else if (GEngine->ActiveWorld->WorldType == EWorldType::PIE)
     {
-        auto Camera = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager;
+        auto CameraPOV = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager->ViewTarget.POV;
 
         V = JungleMath::CreateViewMatrix(
-            Camera->GetWorldLocation(),
-            Camera->GetWorldLocation() + Camera->GetForwardVector(),
-            Camera->GetUpVector()
+            CameraPOV.Location,
+            CameraPOV.Location + CameraPOV.Rotation.GetForwardVector(),
+            CameraPOV.Rotation.GetUpVector()
         );
 
-        if (Camera->GetProjectionMode() == CameraProjectionMode::Perspective)
+        if (CameraPOV.ProjectionMode == CameraProjectionMode::Perspective)
         {
             P = JungleMath::CreateProjectionMatrix(
-                FMath::DegreesToRadians(Camera->GetFieldOfView()),
-                Camera->GetAspectRatio(),
-                Camera->GetNearClip(),
-                Camera->GetFarClip()
+                FMath::DegreesToRadians(CameraPOV.FOV),
+                CameraPOV.AspectRatio,
+                CameraPOV.PerspectiveNearClipPlane,
+                CameraPOV.PerspectiveFarClipPlane
             );
         }
-        else if (Camera->GetProjectionMode() == CameraProjectionMode::Orthographic)
+        else if (CameraPOV.ProjectionMode == CameraProjectionMode::Orthographic)
         {
             // 오쏘그래픽 너비는 줌 값과 가로세로 비율에 따라 결정됩니다.
-            const float OrthoWidth = Camera->GetOrthoSize() * Camera->GetAspectRatio();
-            const float OrthoHeight = Camera->GetOrthoSize();
+            const float OrthoWidth = CameraPOV.OthoroWidth;
+            const float OrthoHeight = CameraPOV.OthoroWidth / CameraPOV.AspectRatio;
 
             // 오쏘그래픽 투영 행렬 생성 (nearPlane, farPlane 은 기존 값 사용)
             P = JungleMath::CreateOrthoProjectionMatrix(
                 OrthoWidth,
                 OrthoHeight,
-                Camera->GetNearClip(),
-                Camera->GetFarClip()
+                CameraPOV.OrthoNearClipPlane,
+                CameraPOV.OrthoFarClipPlane
             );
         }
     }
@@ -237,8 +238,8 @@ bool UBillboardComponent::CheckPickingOnNDC(const TArray<FVector>& quadVertices,
         }
         else if (GEngine->ActiveWorld->WorldType == EWorldType::PIE)
         {
-            auto Camera = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager;
-            CameraLocation = Camera->GetWorldLocation();
+            auto CameraPOV = GEngine->ActiveWorld->GetFirstPlayerController()->PlayerCameraManager->ViewTarget.POV;
+            CameraLocation = CameraPOV.Location;
         }
         hitDistance = (WorldLocation - CameraLocation).Length();
         return true;

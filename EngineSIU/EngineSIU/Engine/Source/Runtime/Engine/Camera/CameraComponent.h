@@ -1,14 +1,9 @@
 #pragma once
+#include "CameraTypes.h"
 #include "Components/SceneComponent.h"
 
 #define MIN_ORTHOZOOM (1.0)  // 2D ortho viewport zoom >= MIN_ORTHOZOOM
 #define MAX_ORTHOZOOM (1e25)
-
-enum class CameraProjectionMode : uint8
-{
-    Perspective,
-    Orthographic,
-};
 
 class UCameraComponent : public USceneComponent
 {
@@ -34,13 +29,6 @@ public:
     void SetProjectionMode(CameraProjectionMode InProjectionMode){ ProjectionMode = InProjectionMode; }
     CameraProjectionMode GetProjectionMode() const { return ProjectionMode; }
 
-    float GetOrthoSize() { return OrthoSize; }
-    void SetOrthoSize(float InOrthoSize)
-    {
-        OrthoSize = InOrthoSize;
-        OrthoSize = FMath::Max(OrthoSize, 0.1f);
-    }
-
 private:
     // 카메라 정보 
     float ViewFOV = 90.0f;
@@ -48,7 +36,6 @@ private:
     float NearClip = 0.1f;
     float FarClip = 1000.0f;
     float OrthoZoom;
-    float OrthoSize = 0.1;
 
     CameraProjectionMode ProjectionMode = CameraProjectionMode::Perspective;
 };
