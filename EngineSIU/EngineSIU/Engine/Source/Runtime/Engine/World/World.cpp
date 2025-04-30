@@ -7,6 +7,7 @@
 #include "UnrealEd/SceneManager.h"
 #include "Components/PrimitiveComponent.h"
 #include "GameFramework/Actor.h"
+#include "GameFramework/PlayerController.h"
 
 UWorld* UWorld::CreateWorld(UObject* InOuter, const EWorldType InWorldType, const FString& InWorldName)
 {
@@ -49,6 +50,13 @@ void UWorld::BeginPlay()
 
 void UWorld::Tick(float DeltaTime)
 {
+
+    // TODO: 시간 관련 부분 나머지 추가 필요.
+    // TimeSeconds 는 Pause되지 않았을 때 도는 Game Time.
+    // if (!bIsPaused)
+    TimeSeconds += DeltaTime;
+
+
     if (WorldType != EWorldType::Editor)
     {
         for (AActor* Actor : PendingBeginPlayActors)
@@ -84,6 +92,15 @@ void UWorld::Tick(float DeltaTime)
         }
         PendingDestroyActors.Empty();
     }
+
+    for (APlayerController* PlayerController : PlayerControllers)
+    {
+        if (PlayerController)
+        {
+            PlayerController->UpdateCameraManager(DeltaTime);
+        }
+    }
+
 }
 
 void UWorld::Release()
@@ -117,6 +134,20 @@ AActor* UWorld::SpawnActor(UClass* InClass, FName InActorName)
     }
 
     UE_LOG(LogLevel::Error, TEXT("SpawnActor failed: Class '%s' is not derived from AActor."), *InClass->GetName());
+    return nullptr;
+}
+
+void UWorld::AddPlayerController(APlayerController* InPlayerController)
+{
+    PlayerControllers.Add(InPlayerController);
+}
+
+APlayerController* UWorld::GetFirstPlayerController()
+{
+    if (PlayerControllers.Num() > 0)
+    {
+        return PlayerControllers[0];
+    }
     return nullptr;
 }
 
