@@ -6,6 +6,22 @@
 class AActor;
 class UCameraModifier;
 
+struct FMinimalViewInfo 
+{
+    /// 카메라의 위치
+    FVector Location;
+    /// 카메라의 회전
+    FRotator Rotation;
+    /// 카메라의 Field of View
+    float FOV;
+    /// 카메라의 Aspect Ratio
+    float AspectRatio;
+    /// 카메라의 Near Clip Plane
+    float NearClipPlane;
+    /// 카메라의 Far Clip Plane
+    float FarClipPlane;
+};
+
 struct FViewTarget
 {
 
