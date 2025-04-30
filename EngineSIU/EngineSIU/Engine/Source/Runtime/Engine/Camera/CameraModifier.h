@@ -4,6 +4,7 @@
 #include "UObject/ObjectMacros.h"
 
 class APlayerCameraManager;
+struct FMinimalViewInfo;
 
 class UCameraModifier : public UObject
 {
@@ -12,6 +13,8 @@ class UCameraModifier : public UObject
 public:
     UCameraModifier() = default;
 
+    virtual bool ModifyCamera(float DeltaTime, FMinimalViewInfo& InOutPOV);
+
 private:
     APlayerCameraManager* CameraOwner;
     float AlphaInTime;
@@ -19,7 +22,5 @@ private:
     float Alpha;
     uint32 bDisabled;
     uint8 Priority;
-
-
 };
 

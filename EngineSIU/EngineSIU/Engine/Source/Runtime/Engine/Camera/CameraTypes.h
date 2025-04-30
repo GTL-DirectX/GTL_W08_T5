@@ -2,7 +2,13 @@
 
 #include "Math/Vector.h"
 #include "Math/Rotator.h"
+#include "Math/Color.h"
 
+enum class CameraProjectionMode : uint8
+{
+    Perspective,
+    Orthographic,
+};
 
 struct FMinimalViewInfo
 {
@@ -31,6 +37,13 @@ public:
     /** The near plane distance of the perspective view (in world units). Set to a negative value to use the default global value of GNearClippingPlane */
     float PerspectiveNearClipPlane;
 
+    float PerspectiveFarClipPlane;
+
+    CameraProjectionMode ProjectionMode;
+
+    float FadeAlpha;
+    FLinearColor FadeColor;
+
 private:
     // Only used for Ortho camera auto plane calculations, tells the Near plane of the extra distance that needs to be added.
     FVector CameraToViewTarget;
@@ -46,6 +59,10 @@ public:
         , OrthoNearClipPlane(0.0f)
         , OrthoFarClipPlane(2097152.0)
         , PerspectiveNearClipPlane(-1.0f)
+        , PerspectiveFarClipPlane(10000.0)
+        , ProjectionMode(CameraProjectionMode::Perspective)
+        , FadeAlpha(0.0f)
+        , FadeColor(FLinearColor::Black)
     { }
 
 
