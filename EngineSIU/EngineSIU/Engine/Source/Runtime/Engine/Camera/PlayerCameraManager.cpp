@@ -268,15 +268,6 @@ void APlayerCameraManager::UpdateViewTarget(FViewTarget& OutVT, float DeltaTime)
         // 여기 뭔가 더 추가되어야 함.
         // 아니면 그냥 CameraComponent를 무조건 가지고 있다고 가정하고 짜도 될 듯.
     }
-
-        // 실제 Shake/Fade/Zoom 연출 처리
-        bool bKeep = Mod->ModifyCamera(DeltaTime, ViewTarget.POV);
-        if (!bKeep)
-        {
-            // Modifier 스스로 “끝났다” 를 알리면 제거
-            ModifierList.RemoveAt(i);
-        }
-    }
 }
 
 void APlayerCameraManager::ApplyCameraModifiers(float DeltaTime, FMinimalViewInfo& InOutPOV)
