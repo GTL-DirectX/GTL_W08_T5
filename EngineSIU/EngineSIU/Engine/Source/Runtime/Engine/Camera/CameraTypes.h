@@ -60,7 +60,7 @@ public:
         , OrthoFarClipPlane(2097152.0f)
         , PerspectiveNearClipPlane(0.1f)
         , PerspectiveFarClipPlane(1000.0f)
-        , ProjectionMode(CameraProjectionMode::Perspective)
+        , ProjectionMode(ECameraProjectionMode::Perspective)
         , FadeAlpha(0.0f)
         , FadeColor(FLinearColor::Black)
     { }

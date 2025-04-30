@@ -349,9 +349,4 @@ struct FMath
         if (Min > Max) std::swap(Min, Max);
         return Min + (Max - Min) * FRand();
     }
-    
-    [[nodiscard]] static FORCEINLINE bool IsNearlyZero(float Value, float ErrorTolerance = SMALL_NUMBER)
-    {
-        return Abs<float>(Value) <= ErrorTolerance;
-    }
 };
