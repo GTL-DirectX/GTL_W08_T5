@@ -55,28 +55,7 @@ void APlayerCameraManager::AddModifier(UCameraModifier* Modifier)
     {
         Modifier->CameraOwner = this;
         Modifier->bDisabled = false;
-        Modifiers.Add(Modifier);
-    }
-}
-
-void APlayerCameraManager::UpdateCamera(float DeltaTime, FMinimalViewInfo& InOutPOV)
-{
-    for (int32 i = Modifiers.Num() - 1; i >= 0; --i)
-    {
-        UCameraModifier* Mod = Modifiers[i];
-        if (!Mod || Mod->bDisabled)
-        {
-            Modifiers.RemoveAt(i);
-            continue;
-        }
-
-        // 실제 Shake/Fade/Zoom 연출 처리
-        bool bKeep = Mod->ModifyCamera(DeltaTime, InOutPOV);
-        if (!bKeep)
-        {
-            // Modifier 스스로 “끝났다” 를 알리면 제거
-            Modifiers.RemoveAt(i);
-        }
+        ModifierList.Add(Modifier);
     }
 }
 
@@ -102,7 +81,23 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
     // 예를 들어, 카메라의 위치나 회전을 업데이트할 수 있습니다.
     // 이 함수는 매 프레임마다 호출됩니다.
 
+    for (int32 i = ModifierList.Num() - 1; i >= 0; --i)
+    {
+        UCameraModifier* Mod = ModifierList[i];
+        if (!Mod || Mod->bDisabled)
+        {
+            ModifierList.RemoveAt(i);
+            continue;
+        }
 
+        // 실제 Shake/Fade/Zoom 연출 처리
+        bool bKeep = Mod->ModifyCamera(DeltaTime, CameraCachePrivate.POV);
+        if (!bKeep)
+        {
+            // Modifier 스스로 “끝났다” 를 알리면 제거
+            ModifierList.RemoveAt(i);
+        }
+    }
 }
 
 void APlayerCameraManager::ApplyCameraModifiers(float DeltaTime, FMinimalViewInfo& InOutPOV)

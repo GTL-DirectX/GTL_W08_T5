@@ -16,6 +16,8 @@
 #include "GameFramework/PlayerController.h"
 #include "Games/LastWar/UI/LastWarUI.h"
 #include "Audio/AudioManager.h"
+#include "Camera/CameraModifier/CameraShakeModifier.h"
+#include "Camera/PlayerCameraManager.h"
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -135,7 +137,13 @@ void APlayerCharacter::HandleOverlap(AActor* OtherActor)
 
         if (APlayerController* PC = Cast<APlayerController>(Controller))
         {
-            UCameraShakeModifier* ShakeModifier = 
+            UCameraShakeModifier* ShakeModifier = FObjectFactory::ConstructObject<UCameraShakeModifier>(this);
+            ShakeModifier->SetDuration(0.5f);
+            ShakeModifier->SetBlendInTime(0.1f);
+            ShakeModifier->SetBlendOutTime(0.1f);
+            ShakeModifier->SetScale(1.0f);
+
+            PC->PlayerCameraManager->AddModifier(ShakeModifier);
         }
         
         AudioManager::Get().PlayOneShot(EAudioType::Shot);

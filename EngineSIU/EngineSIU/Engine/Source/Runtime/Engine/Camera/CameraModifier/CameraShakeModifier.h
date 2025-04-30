@@ -21,6 +21,15 @@ public:
 
     virtual bool ModifyCamera(float DeltaTime, FMinimalViewInfo& InOutPOV) override;
 
+    void SetDuration(float InDuration) { Duration = InDuration; }
+    void SetBlendInTime(float InBlendInTime) { BlendInTime = InBlendInTime; }
+    void SetBlendOutTime(float InBlendOutTime) { BlendOutTime = InBlendOutTime; }
+    void SetScale(float InScale) { Scale = InScale; }
+    float GetDuration() const { return Duration; }
+    float GetBlendInTime() const { return BlendInTime; }
+    float GetBlendOutTime() const { return BlendOutTime; }
+    float GetScale() const { return Scale; }
+
 private:
     float Duration = 0.5f;
     float BlendInTime = 0.1f;

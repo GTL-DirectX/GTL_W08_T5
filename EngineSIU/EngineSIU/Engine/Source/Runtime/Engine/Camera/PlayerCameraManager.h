@@ -57,7 +57,6 @@ public:
     virtual UObject* Duplicate(UObject* InOuter) override;
 
     void AddModifier(UCameraModifier* Modifier);
-    void UpdateCamera(float DeltaTime, FMinimalViewInfo& InOutPOV);
 
     virtual void RegisterLuaType(sol::state& Lua) override;
     virtual bool BindSelfLuaProperties() override;
@@ -89,7 +88,6 @@ public:
 public:
     virtual void ApplyCameraModifiers(float DeltaTime, FMinimalViewInfo& InOutPOV);
 
-    
 protected:
     TArray<UCameraModifier*> ModifierList;
 
