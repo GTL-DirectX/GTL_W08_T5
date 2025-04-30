@@ -86,7 +86,10 @@ public:
     // Blending에 쓰일 시간.
     float BlendTimeToGo;
 
-    TArray<UCameraModifier*> Modifiers;
+public:
+    virtual void ApplyCameraModifiers(float DeltaTime, FMinimalViewInfo& InOutPOV);
+
+    
 protected:
     TArray<UCameraModifier*> ModifierList;
 
