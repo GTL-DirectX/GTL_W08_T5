@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
+#include "Components/SpringArmComponent.h"
 #include "Components/Shapes/ShapeComponent.h"
 #include "UnrealEd/EditorPanel.h"
 
@@ -55,6 +56,8 @@ private:
 
     void RenderForShapeComponent(UShapeComponent* ShapeComponent) const;
 
+    void RenderForSpringArmComponent(USpringArmComponent* SpringArmComp) const;
+
     template<typename T>
         requires std::derived_from<T, UActorComponent>
     T* GetTargetComponent(AActor* SelectedActor, USceneComponent* SelectedComponent);
@@ -68,5 +71,5 @@ private:
     FObjMaterialInfo tempMaterialInfo;
     bool IsCreateMaterial;
 
-    const FString TemplateFilePath = FString("Contents/Template/LuaTemplate.lua");
+    const FString TemplateFilePath = FString("Scripts/LuaTemplate.lua");
 };

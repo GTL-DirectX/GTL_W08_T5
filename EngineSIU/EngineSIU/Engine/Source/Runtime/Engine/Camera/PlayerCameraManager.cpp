@@ -105,6 +105,7 @@ float FViewTargetTransitionParams::GetBlendAlpha(const float& TimePct) const
 void APlayerCameraManager::PostSpawnInitialize()
 {
     Super::PostSpawnInitialize();
+    ViewTarget.POV.Location = FVector(-3.0f, 0.0f, 3.0f);
 }
 
 UObject* APlayerCameraManager::Duplicate(UObject* InOuter)

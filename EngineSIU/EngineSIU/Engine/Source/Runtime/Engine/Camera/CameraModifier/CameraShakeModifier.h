@@ -37,7 +37,6 @@ private:
     float PhasePitch, PhaseYaw, PhaseRoll;
 
 
-
     FVector   OriginalLocation;
     FRotator  OriginalRotation;
     bool      bHasCapturedBase = false;
