@@ -48,8 +48,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-    AddShakeModifier(0.5f, 0.1f, 0.1f, 1.0f);
-
     if (!LastWarUI::bShowGameOver && Health <= 0)
     {
         EnableInput(Cast<APlayerController>(Controller));

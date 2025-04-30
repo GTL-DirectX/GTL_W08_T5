@@ -22,7 +22,6 @@ public:
 
 public:
     float Duration = 0.5f;
-    float ElapsedTime = 0.0f;
     float Scale = 1.0f;
     IInterpolator* InCurve = nullptr;
     IInterpolator* OutCurve = nullptr;
@@ -40,6 +39,8 @@ private:
     FVector   OriginalLocation;
     FRotator  OriginalRotation;
     bool      bHasCapturedBase = false;
+
+    float ElapsedTime = 0.0f;
 
 };
 

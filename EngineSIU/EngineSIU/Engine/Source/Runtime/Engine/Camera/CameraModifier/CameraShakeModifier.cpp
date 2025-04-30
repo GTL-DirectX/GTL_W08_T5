@@ -21,43 +21,28 @@ UCameraShakeModifier::UCameraShakeModifier()
     PhaseYaw = FMath::FRandRange(0.f, 2 * PI);
     PhaseRoll = FMath::FRandRange(0.f, 2 * PI);
 
-    // 초기 시간은 0
-    ElapsedTime = 0.f;
 }
 
 bool UCameraShakeModifier::ModifyCamera(float DeltaTime, FMinimalViewInfo& InOutPOV)
 {
-    // 1) 경과 시간 누적
+    Super::ModifyCamera(DeltaTime, InOutPOV);
+
     ElapsedTime += DeltaTime;
     if (ElapsedTime >= Duration)
-        return false;  // 완전 종료
-
-    // 2) Alpha 결정
-    float alpha = 1.0f;
-    // 페이드인 중
-    if (ElapsedTime < AlphaInTime)
     {
-        alpha = ElapsedTime / AlphaInTime;
-    }
-    // 페이드아웃 시작 전 (유지 구간)
-    else if (ElapsedTime < Duration - AlphaOutTime)
-    {
-        alpha = 1.0f;
-    }
-    // 페이드아웃 중
-    else
-    {
-        float tOut = (ElapsedTime - (Duration - AlphaOutTime)) / AlphaOutTime;
-        alpha = 1.0f - tOut;
+        DisableModifier(true);
+        return false;
     }
 
-    // 3) ShakeScale 계산
-    const float ShakeScale = alpha * Scale;
+    // 1) 경과 시간 누적
+
+    if (Alpha <= 0.f)
+        return false;  // 비활성화
 
     // 4) 시간 누적 → 오프셋 계산
     auto CalcOffset = [&](const Oscillator& O, float Phase)->float
         {
-            return O.Amplitude * ShakeScale
+            return O.Amplitude * Alpha * Scale
                 * FMath::Sin(Phase + ElapsedTime * O.Frequency);
         };
 

@@ -217,7 +217,6 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
         }
     }
 
-
     FillCameraCache(NewPOV);
 }
 
@@ -264,6 +263,28 @@ void APlayerCameraManager::UpdateViewTarget(FViewTarget& OutVT, float DeltaTime)
 
     ApplyCameraModifiers(DeltaTime, OutVT.POV);
 
+    TArray<UCameraModifier*> RemoveModifierList;
+    for (UCameraModifier* Modifier : ModifierList)
+    {
+        if (Modifier && Modifier->IsDisabled())
+        {
+            RemoveModifierList.Add(Modifier);
+        }
+    }
+    for (UCameraModifier* Modifier : RemoveModifierList)
+    {
+        RemoveCameraModifier(Modifier);
+    }
+}
+
+bool APlayerCameraManager::RemoveCameraModifier(UCameraModifier* ModifierToRemove)
+{
+    if (ModifierToRemove)
+    {
+        ModifierList.Remove(ModifierToRemove);
+        return true;
+    }
+    return false;
 }
 
 void APlayerCameraManager::SetViewTarget(AActor* NewViewTarget, FViewTargetTransitionParams TransitionParams)
