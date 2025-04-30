@@ -223,7 +223,7 @@ void APlayerCameraManager::UpdateCamera(float DeltaTime)
 
 void APlayerCameraManager::UpdateViewTarget(FViewTarget& OutVT, float DeltaTime)
 {
-    if ((PendingViewTarget.Target == nullptr) /*&& BlendParams.bLockOutgoing*/ && OutVT.Equals(ViewTarget))
+    if ((PendingViewTarget.Target == nullptr) && BlendParams.bLockOutgoing && OutVT.Equals(ViewTarget))
     {
         return;
     }

@@ -49,16 +49,16 @@ void APlayerCharacter::Tick(float DeltaTime)
     FollowCamera->SetRelativeLocation(FVector(-3.0f, 0.0f, 3.0f));
     auto Location = FollowCamera->GetWorldLocation();
 
-    //if (APlayerController* PC = Cast<APlayerController>(Controller))
-    //{
-    //    UCameraShakeModifier* ShakeModifier = FObjectFactory::ConstructObject<UCameraShakeModifier>(this);
-    //    ShakeModifier->SetDuration(0.5f);
-    //    ShakeModifier->SetBlendInTime(0.1f);
-    //    ShakeModifier->SetBlendOutTime(0.1f);
-    //    ShakeModifier->SetScale(1.0f);
+    if (APlayerController* PC = Cast<APlayerController>(Controller))
+    {
+        UCameraShakeModifier* ShakeModifier = FObjectFactory::ConstructObject<UCameraShakeModifier>(this);
+        ShakeModifier->SetDuration(0.5f);
+        ShakeModifier->SetBlendInTime(0.1f);
+        ShakeModifier->SetBlendOutTime(0.1f);
+        ShakeModifier->SetScale(1.0f);
 
-    //    PC->PlayerCameraManager->AddModifier(ShakeModifier);
-    //}
+        PC->PlayerCameraManager->AddModifier(ShakeModifier);
+    }
 
     if (!LastWarUI::bShowGameOver && Health <= 0)
     {

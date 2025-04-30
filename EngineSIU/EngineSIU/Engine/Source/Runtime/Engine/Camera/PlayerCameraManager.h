@@ -88,7 +88,7 @@ public:
     uint32 bLockOutgoing : 1;
 
     FViewTargetTransitionParams()
-        : BlendTime(0.f)
+        : BlendTime(0.1f)
         , BlendFunction(EViewTargetBlendFunction::VTBlend_Cubic)
         , BlendExp(2.f)
         , bLockOutgoing(false)
