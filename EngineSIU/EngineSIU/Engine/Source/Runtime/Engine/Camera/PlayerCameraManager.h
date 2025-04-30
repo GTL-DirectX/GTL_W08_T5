@@ -6,22 +6,6 @@
 class AActor;
 class UCameraModifier;
 
-struct FMinimalViewInfo 
-{
-    /// 카메라의 위치
-    FVector Location;
-    /// 카메라의 회전
-    FRotator Rotation;
-    /// 카메라의 Field of View
-    float FOV;
-    /// 카메라의 Aspect Ratio
-    float AspectRatio;
-    /// 카메라의 Near Clip Plane
-    float NearClipPlane;
-    /// 카메라의 Far Clip Plane
-    float FarClipPlane;
-};
-
 struct FViewTarget
 {
 
@@ -55,6 +39,9 @@ public:
     virtual void PostSpawnInitialize() override;
     virtual UObject* Duplicate(UObject* InOuter) override;
 
+    void AddModifier(UCameraModifier* Modifier);
+    void UpdateCamera(float DeltaTime, FMinimalViewInfo& InOutPOV);
+
     virtual void RegisterLuaType(sol::state& Lua) override;
     virtual bool BindSelfLuaProperties() override;
 
@@ -80,7 +67,7 @@ public:
     // Blending에 쓰일 시간.
     float BlendTimeToGo;
 
-    
+    TArray<UCameraModifier*> Modifiers;
 protected:
     TArray<UCameraModifier*> ModifierList;
 

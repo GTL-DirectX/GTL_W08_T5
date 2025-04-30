@@ -133,6 +133,11 @@ void APlayerCharacter::HandleOverlap(AActor* OtherActor)
             LuaScriptComponent->ActivateFunction("OnOverlapEnemy", Enemy);
         }
 
+        if (APlayerController* PC = Cast<APlayerController>(Controller))
+        {
+            UCameraShakeModifier* ShakeModifier = 
+        }
+        
         AudioManager::Get().PlayOneShot(EAudioType::Shot);
     }
     else if (AWall* Wall = Cast<AWall>(OtherActor))

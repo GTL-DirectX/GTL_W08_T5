@@ -1,7 +1,10 @@
 #pragma once
 #include "Camera/CameraModifier.h"
+#include "Math/Interpolator.h"
+#include "UObject/ObjectFactory.h"
 
 struct FMinimalViewInfo;
+class APlayerCameraManager;
 struct Oscillator
 {
     float Amplitude = 0.0f;
@@ -14,9 +17,10 @@ class UCameraShakeModifier : public UCameraModifier
     DECLARE_CLASS(UCameraShakeModifier, UCameraModifier)
 
 public:
-    UCameraShakeModifier() = default;
+    UCameraShakeModifier();
 
-    bool ModifyCamera(float DeltaTime, FMinimalViewInfo& InOutPOV);
+    virtual bool ModifyCamera(float DeltaTime, FMinimalViewInfo& InOutPOV) override;
+
 private:
     float Duration = 0.5f;
     float BlendInTime = 0.1f;
@@ -32,8 +36,8 @@ private:
     float PhaseX, PhaseY, PhaseZ;
     float PhasePitch, PhaseYaw, PhaseRoll;
 
-    std::function<float(float)> InCurve;
-    std::function<float(float)> OutCurve;
+    std::shared_ptr<IInterpolator> InCurve;
+    std::shared_ptr<IInterpolator> OutCurve;
 
 };
 

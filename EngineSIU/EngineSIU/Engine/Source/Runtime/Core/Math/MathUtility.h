@@ -2,6 +2,7 @@
 #include <cmath>
 #include <numbers>
 #include "Core/HAL/PlatformType.h"
+#include <random>
 
 
 #define PI                   (3.1415926535897932f)
@@ -302,5 +303,18 @@ struct FMath
     [[nodiscard]] static constexpr FORCEINLINE T LerpStable(const T& A, const T& B, float Alpha)
     {
         return (T)((A * (1.0f - Alpha)) + (B * Alpha));
+    }
+
+    static float FRand()
+    {
+        static std::mt19937_64 RNG{ std::random_device{}() };
+        static std::uniform_real_distribution<float> Dist{ 0.0f, 1.0f };
+        return Dist(RNG);
+    }
+
+    static float FRandRange(float Min, float Max)
+    {
+        if (Min > Max) std::swap(Min, Max);
+        return Min + (Max - Min) * FRand();
     }
 };

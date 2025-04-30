@@ -5,6 +5,7 @@
 
 #include "Engine/Lua/LuaUtils/LuaTypeMacros.h"
 #include "Components/LuaScriptComponent.h"
+#include "CameraModifier.h"
 
 void FViewTarget::SetNewTarget(AActor* NewTarget)
 {
@@ -43,6 +44,37 @@ UObject* APlayerCameraManager::Duplicate(UObject* InOuter)
 
 
     return NewCameraManager;
+}
+
+void APlayerCameraManager::AddModifier(UCameraModifier* Modifier)
+{
+    if (Modifier)
+    {
+        Modifier->CameraOwner = this;
+        Modifier->bDisabled = false;
+        Modifiers.Add(Modifier);
+    }
+}
+
+void APlayerCameraManager::UpdateCamera(float DeltaTime, FMinimalViewInfo& InOutPOV)
+{
+    for (int32 i = Modifiers.Num() - 1; i >= 0; --i)
+    {
+        UCameraModifier* Mod = Modifiers[i];
+        if (!Mod || Mod->bDisabled)
+        {
+            Modifiers.RemoveAt(i);
+            continue;
+        }
+
+        // 실제 Shake/Fade/Zoom 연출 처리
+        bool bKeep = Mod->ModifyCamera(DeltaTime, InOutPOV);
+        if (!bKeep)
+        {
+            // Modifier 스스로 “끝났다” 를 알리면 제거
+            Modifiers.RemoveAt(i);
+        }
+    }
 }
 
 void APlayerCameraManager::RegisterLuaType(sol::state& Lua)

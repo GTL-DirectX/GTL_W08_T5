@@ -15,7 +15,7 @@ public:
 
     virtual bool ModifyCamera(float DeltaTime, FMinimalViewInfo& InOutPOV);
 
-private:
+public:
     APlayerCameraManager* CameraOwner;
     float AlphaInTime;
     float AlphaOutTime;
