@@ -2,7 +2,7 @@
 
 #include "Math/Vector.h"
 #include "Math/Rotator.h"
-
+#include "Math/Color.h"
 
 enum class CameraProjectionMode : uint8
 {
@@ -41,6 +41,9 @@ public:
 
     CameraProjectionMode ProjectionMode;
 
+    float FadeAlpha;
+    FLinearColor FadeColor;
+
 private:
     // Only used for Ortho camera auto plane calculations, tells the Near plane of the extra distance that needs to be added.
     FVector CameraToViewTarget;
@@ -58,6 +61,8 @@ public:
         , PerspectiveNearClipPlane(-1.0f)
         , PerspectiveFarClipPlane(10000.0)
         , ProjectionMode(CameraProjectionMode::Perspective)
+        , FadeAlpha(0.0f)
+        , FadeColor(FLinearColor::Black)
     { }
 
 
